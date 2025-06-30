@@ -8,9 +8,9 @@ const Navbar = () => {
     <nav className="bg-gradient-to-r from-blue-900 from-50% to-purple-800 to-80% h-[70px] text-white flex items-center p-2 shadow-lg">
       <ul className='flex items-center justify-around w-full'>
         <div>
-          <li className="text-4xl font-bold cursor-pointer">
+          <Link to='/' className="text-4xl font-bold cursor-pointer">
         FutShop
-      </li>
+      </Link>
         </div>
 
       <div className='w-[40%] relative'>
@@ -20,18 +20,20 @@ const Navbar = () => {
         </li>
       </div>
 
-      <div>
+      <div className='flex gap-10'>
         <Link to='/cartDetails' className='flex flex-col items-center justify-center cursor-pointer hover:scale-105 transition-all duration-500'>
           <img src={cart} alt="Cart Icon"  className='w-8 text-xl'/>
           <span>Cart</span>
         </Link>
-      </div>
-      <div>
         <Link to='/Login' className='flex flex-col items-center justify-center cursor-pointer hover:scale-105 transition-all duration-500'>
-          <FaUser className='w-8 text-xl' />
-          <span>Login</span>
+          <span>Sign Up</span>
+        </Link>
+
+         <Link to='/register' className='flex items-center justify-center cursor-pointer hover:scale-105 transition-all duration-500  '>
+          <span>Sign In</span>
         </Link>
       </div>
+        
       </ul>
       
       

@@ -5,10 +5,13 @@ import Register from './Register';
 
 const Login = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-900 from-50% to-purple-800 to-80%">
-      <div className="bg-white rounded-lg shadow-lg p-8 w-80">
-        <h1 className="text-3xl font-bold text-center text-blue-800 mb-2 tracking-wide">FUTSHOP</h1>
-        <h2 className="text-lg font-semibold mb-4 text-gray-700">Login</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-200 from-40% to-purple-200 to-60%">
+      <div className="bg-white rounded-lg shadow-lg h-115 p-8 w-95">
+        <div className='text-center mb-4'>
+          <h1 className="text-3xl font-bold text-center text-blue-600 mb-10 tracking-wide">FUTSHOP <hr  className='border border-gray-400 mt-4'/></h1>
+        <h2 className="text-3xl font-[900]  ">Welcome Back</h2>
+        <span className='text-[12px] opacity-60'>Please login to your account</span>
+        </div>
         <form className="space-y-4">
           {/* Username with FaRegUser */}
           <div className="relative">
@@ -36,7 +39,7 @@ const Login = () => {
           </div>
           <button
             type="submit"
-            className="w-full py-2 rounded bg-gradient-to-r from-blue-900 from-50% to-purple-800 to-80% text-white font-semibold mt-2 hover:from-blue-600 hover:to-purple-500 transition"
+            className="w-full py-2 rounded-full bg-blue-600 text-white font-semibold mt-2 hover:bg-blue-700 "
           >
             LOGIN
           </button>
