@@ -4,6 +4,13 @@ import Layout from "./Layout/Layout";
 import Cart from "./Pages/Cart";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
+import Products from "./Pages/Products";
+import CheckOut from "./Pages/CheckOut";
+import PaymentSuccess from "./Pages/PaymentSuccess";
+import PaymentCancel from "./Pages/PaymentCancel";
+import AddProduct from "./Pages/AddProduct";
+import MyOrders from "./Pages/MyOrders";
+import Wishlist from "./Pages/WishList";
 
 
 const App = () => {
@@ -12,7 +19,14 @@ const App = () => {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/cartDetails" element={<Cart />} />
+          <Route path="/Bibek_Bk_Cart/cartDetails" element={<Cart />} />
+          <Route path="/Bibek_Bk_Cart/cartDetails/checkout" element={<CheckOut />} />
+          <Route path="/Bibek_Bk_Cart/products/:productCategory" element={<Products />} />
+          <Route path="/Bibek_Bk_Cart/payment/success" element={<PaymentSuccess />} />
+          <Route path="/Bibek_Bk_Cart/payment/cancel" element={<PaymentCancel />} />
+          <Route path="/Bibek_Bk_Cart/addProduct" element={<AddProduct />} />
+          <Route path="/Bibek_Bk_Cart/MyOrders" element={<MyOrders />} />
+          <Route path="/Bibek_BK_Cart/mywishlist" element={<Wishlist />} />
         </Route>
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
