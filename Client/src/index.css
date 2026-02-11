@@ -6,9 +6,21 @@
     box-sizing: border-box;
     font-family: "Graduate", serif;
 }
-::-webkit-scrollbar{
+/* ::-webkit-scrollbar{
     display: none;
+} */
+
+/* App.css or global stylesheet */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
 
 @keyframes fade-in-left {
     0% {    
@@ -40,4 +52,21 @@
     animation: fade-in-right 0.8s ease-out forwards;
 }
 
+.linear-back {
+    animation: linear-back 4s linear forwards;
 
+}
+
+@keyframes linear-back {
+    0% {
+        width: 100%;
+        opacity: 1
+    }
+    95% {
+        opacity: 0.9;
+    }
+    100% {
+        width: 0%;
+        opacity: 0;
+    }
+}
