@@ -20,24 +20,25 @@ export const Register = async (req, res) => {
     }
 
     try {
-        const user = await UserModel.findOne({email});
+        const isExist = await UserModel.findOne({email});
 
-        if(user){
+        if(isExist){
             return res.status(409).json({error: "Email already exists"});
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const {token} = generateToken(user);
+        
+        const user = await UserModel.create({username, email, password: hashedPassword});
+        
+        const {token} =  generateToken(user);
 
         res.cookie("token", token, {
             // httpOnly: true,
             maxAge: 24*60*60*1000
         })
-
-        await UserModel.create({username, email, password: hashedPassword});
-
         return res.status(201).json({message: "User registration successfully!"})
     } catch (error) {
+        console.log(error)
         return res.status(500).json(error);
     }
 
