@@ -20,7 +20,6 @@ const Navbar = () => {
     }
     setSearchQuery("");
   }
-console.log(user)
   return (
     <nav className="bg-gradient-to-r from-blue-900 from-50% to-purple-800 to-80% h-[70px] text-white flex items-center p-2 shadow-lg">
       <ul className='flex items-center justify-around w-full'>
@@ -38,18 +37,18 @@ console.log(user)
         
       </div>
 
-      <div className='flex gap-10'>
-      <Link to='/Bibek_Bk_Cart/addProduct' className='flex flex-col items-center justify-center cursor-pointer hover:scale-105 transition-all duration-500 text-xl'>
+      <div className='flex gap-8'>
+      <Link to='/Bibek_Bk_Cart/addProduct' className='flex flex-col items-center justify-center cursor-pointer hover:scale-105 transition-all duration-500 text-lg'>
           <span>Add Product</span>
         </Link>
-         <Link to='/Bibek_Bk_Cart/myorders' className='flex flex-col items-center justify-center cursor-pointer hover:scale-105 transition-all duration-500 text-xl'>
+      {user &&     <Link to='/Bibek_Bk_Cart/myorders' className='flex flex-col items-center justify-center cursor-pointer hover:scale-105 transition-all duration-500 text-lg'>
           <span>My Orders</span>
-        </Link>
-         <Link to='/Bibek_Bk_Cart/mywishlist' className='flex flex-col items-center justify-center cursor-pointer hover:scale-105 transition-all duration-500 text-xl'>
+        </Link>}
+         <Link to='/Bibek_Bk_Cart/mywishlist' className='flex flex-col items-center justify-center cursor-pointer hover:scale-105 transition-all duration-500 text-lg'>
           <span>My WishList</span>
         </Link>
         <Link to='/Bibek_Bk_Cart/cartDetails' className='flex flex-col items-center justify-center cursor-pointer hover:scale-105 transition-all duration-500'>
-          <img src={cart} alt="Cart Icon"  className='w-8 text-xl'/>
+          <img src={cart} alt="Cart Icon"  className='w-6 text-lg'/>
           <span>Cart</span>
         </Link>
        {!user ? <>
