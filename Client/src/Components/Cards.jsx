@@ -71,7 +71,6 @@ const Cards = ({ id, rating, title, price }) => {
     const data = { id, userId: user._id, title, price, rating };
     handleAddToCart(data);
   };
-
   const handleRemove = (productId) => {
     setIsAddedToCart(false);
     setShowMessage(true);
