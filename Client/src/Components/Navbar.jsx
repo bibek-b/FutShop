@@ -52,11 +52,11 @@ const Navbar = () => {
           <span>Cart</span>
         </Link>
        {!user ? <>
-         <Link to='/Login' className='flex flex-col items-center justify-center cursor-pointer hover:scale-105 transition-all duration-500'>
+         <Link to='/register' className='flex flex-col items-center justify-center cursor-pointer hover:scale-105 transition-all duration-500'>
           <span>Sign Up</span>
         </Link>
 
-         <Link to='/register' className='flex items-center justify-center cursor-pointer hover:scale-105 transition-all duration-500  '>
+         <Link to='/login' className='flex items-center justify-center cursor-pointer hover:scale-105 transition-all duration-500  '>
           <span>Sign In</span>
         </Link> </>: <div className="flex items-center gap-3">
           <img src={profile} alt="Profile" className="w-15 h-15 rounded-full object-cover" />{user.username}
