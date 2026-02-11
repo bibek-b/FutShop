@@ -1,6 +1,7 @@
 import UserModel from "../model/UserModel.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { generateToken } from "../utils/generateToken.js";
 
 export const Register = async (req, res) => {
     
@@ -19,13 +20,19 @@ export const Register = async (req, res) => {
     }
 
     try {
-        const isEmailExists = await UserModel.findOne({email});
+        const user = await UserModel.findOne({email});
 
-        if(isEmailExists){
+        if(user){
             return res.status(409).json({error: "Email already exists"});
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
+        const {token} = generateToken(user);
+
+        res.cookie("token", token, {
+            // httpOnly: true,
+            maxAge: 24*60*60*1000
+        })
 
         await UserModel.create({username, email, password: hashedPassword});
 
@@ -63,7 +70,7 @@ export const Login = async (req, res) => {
             return res.status(404).json({error: "Password is invalid!"});
         }
 
-        const token = jwt.sign({userId: user._id}, process.env.SECRET_KEY, {expiresIn: "1d"});
+        const {token} = generateToken(user);
 
         res.cookie("token", token, {
             // httpOnly: true,
