@@ -16,10 +16,7 @@ const MyOrders = () => {
   return (
     <div className="min-h-screen pt-20 flex flex-col items-center">
       <h1 className="text-2xl font-bold mb-6">My Orders</h1>
-      <div>
-        <p>Name: Bibek Bk</p>
-        <p>Roll No: 05</p>
-      </div>
+
       {userOrders && userOrders.length > 0 ? (
         <table className="table-auto border-collapse border border-gray-300">
           <thead>

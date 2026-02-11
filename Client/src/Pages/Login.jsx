@@ -31,7 +31,6 @@ const Login = () => {
         alert("Failed to login. Please try again!")
       }
     } catch (error) {
-      console.log(error)
       alert(error.response.data?.error ||"Something went wrong. Please try again!");
     }
   }

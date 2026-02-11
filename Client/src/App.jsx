@@ -19,14 +19,14 @@ const App = () => {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/Bibek_Bk_Cart/cartDetails" element={<Cart />} />
-          <Route path="/Bibek_Bk_Cart/cartDetails/checkout" element={<CheckOut />} />
-          <Route path="/Bibek_Bk_Cart/products/:productCategory" element={<Products />} />
-          <Route path="/Bibek_Bk_Cart/payment/success" element={<PaymentSuccess />} />
-          <Route path="/Bibek_Bk_Cart/payment/cancel" element={<PaymentCancel />} />
-          <Route path="/Bibek_Bk_Cart/addProduct" element={<AddProduct />} />
-          <Route path="/Bibek_Bk_Cart/MyOrders" element={<MyOrders />} />
-          <Route path="/Bibek_BK_Cart/mywishlist" element={<Wishlist />} />
+          <Route path="/cartDetails" element={<Cart />} />
+          <Route path="/cartDetails/checkout" element={<CheckOut />} />
+          <Route path="/products/:productCategory" element={<Products />} />
+          <Route path="/payment/success" element={<PaymentSuccess />} />
+          <Route path="/payment/cancel" element={<PaymentCancel />} />
+          <Route path="/addProduct" element={<AddProduct />} />
+          <Route path="/MyOrders" element={<MyOrders />} />
+          <Route path="/mywishlist" element={<Wishlist />} />
         </Route>
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />

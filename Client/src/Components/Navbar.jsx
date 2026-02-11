@@ -38,16 +38,16 @@ const Navbar = () => {
       </div>
 
       <div className='flex gap-8'>
-      <Link to='/Bibek_Bk_Cart/addProduct' className='flex flex-col items-center justify-center cursor-pointer hover:scale-105 transition-all duration-500 text-lg'>
+      <Link to='/addProduct' className='flex flex-col items-center justify-center cursor-pointer hover:scale-105 transition-all duration-500 text-lg'>
           <span>Add Product</span>
         </Link>
-      {user &&     <Link to='/Bibek_Bk_Cart/myorders' className='flex flex-col items-center justify-center cursor-pointer hover:scale-105 transition-all duration-500 text-lg'>
+      {user &&     <Link to='/myorders' className='flex flex-col items-center justify-center cursor-pointer hover:scale-105 transition-all duration-500 text-lg'>
           <span>My Orders</span>
         </Link>}
-         <Link to='/Bibek_Bk_Cart/mywishlist' className='flex flex-col items-center justify-center cursor-pointer hover:scale-105 transition-all duration-500 text-lg'>
+         <Link to='/mywishlist' className='flex flex-col items-center justify-center cursor-pointer hover:scale-105 transition-all duration-500 text-lg'>
           <span>My WishList</span>
         </Link>
-        <Link to='/Bibek_Bk_Cart/cartDetails' className='flex flex-col items-center justify-center cursor-pointer hover:scale-105 transition-all duration-500'>
+        <Link to='/cartDetails' className='flex flex-col items-center justify-center cursor-pointer hover:scale-105 transition-all duration-500'>
           <img src={cart} alt="Cart Icon"  className='w-6 text-lg'/>
           <span>Cart</span>
         </Link>

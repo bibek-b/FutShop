@@ -25,10 +25,7 @@ const AddProduct = () => {
     } 
   return (
     <div className="flex flex-col items-center h-[100vh] pt-20 gap-2">
-    <div>
-      <p>Name: Bibek Bk</p>
-      <p>Roll No: 05</p>
-    </div>
+
     <h1 className="text-4xl">Enter Product Detail</h1>
         <form className="flex flex-col border border-black/40 p-2 rounded w-110 gap-8" onSubmit={handleSubmit}>
             <div className="flex gap-8 items-center">

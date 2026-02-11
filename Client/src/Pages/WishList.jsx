@@ -7,10 +7,6 @@ const Wishlist = () => {
     <div className="min-h-screen pt-20 px-4">
       <h1 className="text-3xl font-bold mb-6">My Wishlist</h1>
 
-      <div>
-        <p>Name: Bibek Bk</p>
-        <p>Roll No: 05</p>
-      </div>
 
       {wishlist.length === 0 ? (
         <p className="text-gray-600">No items in wishlist.</p>

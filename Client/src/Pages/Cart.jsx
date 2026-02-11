@@ -81,7 +81,6 @@ const Cart = () => {
     setCarts("");
     window.reload();
   }
-console.log(carts)
   return (!user) ? (
     <p className="h-[100vh] w-full flex items-center justify-center">
       Please{" "}
@@ -107,10 +106,6 @@ console.log(carts)
         </CustomPopupModal>
       )}
       <h1 className="text-6xl text-left mt-4  font-bold">Shopping Cart</h1>
-       <div>
-        <p>Name: Bibek Bk</p>
-        <p>Roll No: 05</p>
-      </div>
       {(carts?.length > 0 && carts.find(c => c.userId === user._id)) ? <div className="flex justify-between hide-scrollbar">
         <div className="flex flex-col w-[50%] mt-10 max-h-[1000px]  overflow-y-scroll">
           {carts?.map((cart, idx) => {
