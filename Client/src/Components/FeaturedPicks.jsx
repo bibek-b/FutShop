@@ -3,6 +3,7 @@ import boots from '../assets/boots.webp';
 import balls from '../assets/balls.webp';
 import gloves from '../assets/gloves.webp';
 import jerseys from '../assets/jerseys.jpg';
+import { Link } from 'react-router-dom';
 
 const fadeIn = {
     hidden: {opacity: 0, y: 30},
@@ -28,11 +29,11 @@ const FeaturedPicks = () => {
                     {img: jerseys, label: 'Football Jerseys'},
                     {img: gloves, label: 'GK Gloves'}
                 ].map((item, i) => (
-                    <motion.div key={i} className='space-y-3' variants={fadeIn} custom={i + 1}>
+                    <motion.div key={i} className='space-y-6' variants={fadeIn} custom={i + 1}>
                     <img src={item.img}
                     alt={item.label}
                     className={`w-[250px] object-cover rounded ${item.className || ''} hover:scale-105 transtion-all duration-300 ease-in-out`} />
-                    <button className='border border-gray-500 px-4 py-2 rounded-full cursor-pointer hover:bg-black hover:text-white hover:border-0 transition-all duration-300 ease-in'>{item.label}</button>
+                    <Link to={`/Bibek_Bk_Cart/products/${item.label}`} className='border border-gray-500 px-4 py-2 rounded-full cursor-pointer hover:bg-black hover:text-white hover:border-0 transition-all duration-300 ease-in'>{item.label}</Link>
                     </motion.div>
                 ))}
         </div>
