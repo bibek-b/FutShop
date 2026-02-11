@@ -2,12 +2,15 @@ import express from 'express';
 import userRoutes from './routes/userRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import productRoutes from './routes/productRoutes.js';
+import paymentRoutes from './routes/paymentRoutes.js';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
+import Stripe from 'stripe';
 
 
 const app = express();
+
 
 const conn =  mongoose.connect(process.env.MONGO_DB_URI);
 
@@ -15,15 +18,17 @@ conn && console.log("Db connection successful!")
 
 app.use(express.json());
 app.use(cors({
-    origin: "http://localhost:5173"
+    origin: "http://localhost:5173",
+    credentials: true
 }));
 app.use(cookieParser());
 
 
-app.use('/users', userRoutes);
-app.use('/auth/user', authRoutes);
-app.use('/products', productRoutes )
+app.use('/api/users', userRoutes);
+app.use('/api/auth/user', authRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/payment',paymentRoutes);
 
-app.listen(5000, () => {
-    console.log("Server is running on port 5000")
+app.listen(9000, () => {
+    console.log("Server is running on port 9000")
 })
