@@ -1,10 +1,14 @@
 import { FaRegUser, FaRegEnvelope, FaLock } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import apiCall from "../Custom-Hooks/apiCall";
+import { useContext } from "react";
+import { UserContext } from "../Context/UserContext";
 
 const Register = () => {
 
   const nav = useNavigate();
+    const { setIsLoggedIn } = useContext(UserContext);
+  
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -23,7 +27,8 @@ const Register = () => {
      const res = await apiCall.post('/auth/user/register', {username : userNm, email: eml, password: psw, confirmPassword: confPsw});
      if(res){
       alert("Registration Successful!");
-      nav("/login", {state: username.value});
+       setIsLoggedIn(true);
+      nav("/");
      } else {
       alert("Failed to register. Please try again!");
      }
