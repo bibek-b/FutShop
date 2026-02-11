@@ -8,6 +8,7 @@ const ProductSchema = new mongoose.Schema({
     },
     rating : {
         type: Number,
+        default: 4.4
     },
     price: {
         type: Number,
@@ -15,7 +16,15 @@ const ProductSchema = new mongoose.Schema({
     },
     category: {
         type: String,
-        required: true
+        required: true,
+        enum: ["Football Boots", "Football Balls", "Football Jerseys", "Gk Gloves"]
+    },
+    quantity: {
+        type: Number
+    },
+    userId : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Users"
     }
 });
 
