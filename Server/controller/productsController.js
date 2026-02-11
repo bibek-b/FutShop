@@ -2,18 +2,17 @@ import ProductsModel from "../model/ProductsModel.js";
 
 //Create product
 export const CreateProduct = async (req, res) => {
-  const { title, rating, price, category } = req.body;
-
-  if (!title || !rating || !price || !category) {
+  const { title, rating, price, category, userId } = req.body;
+  if (!title || !price || !category || !userId) {
     return res.status(400).json({ error: "All fields are required!" });
   }
   try {
-    const isProductExist = await ProductsModel.findOne({title});
+    const isProductExist = await ProductsModel.findOne({ title });
 
     if (isProductExist)
       return res.status(409).json({ error: "Product already exists!" });
 
-    await ProductsModel.create({ title, rating, price, category });
+    await ProductsModel.create({ title, rating, price, category, userId });
 
     res.status(201).json({ message: "Product created successfully!" });
   } catch (error) {
@@ -39,9 +38,44 @@ export const GetProduct = async (req, res) => {
     return res.status(400).json({ error: "Product id is required!" });
   try {
     const product = await ProductsModel.findById(productId);
-    if (product.length === 0) return res.status(400).json({ error: "Product not found!" });
+    if (product.length === 0)
+      return res.status(400).json({ error: "Product not found!" });
 
     return res.status(200).json(product);
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+};
+
+//Get product by userId
+export const GetProductByUserId = async (req, res) => {
+  const { userId } = req.params;
+  if (!userId) return res.status(400).json({ error: "User id is required!" });
+  try {
+    const product = await ProductsModel.find(productId);
+    if (product.length === 0)
+      return res.status(400).json({ error: "Product not found!" });
+
+    return res.status(200).json(product);
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+};
+
+//Get Product By Category
+export const GetProductByCategory = async (req, res) => {
+  const { category } = req.params;
+
+  if (!category) {
+    return res.status(400).json({ message: "Category is required!" });
+  }
+
+  try {
+    const products = await ProductsModel.find({
+      category: { $regex: category, $options: "i" },
+    });
+
+    return res.status(200).json(products);
   } catch (error) {
     return res.status(500).json(error);
   }
@@ -62,19 +96,18 @@ export const UpdateProduct = async (req, res) => {
   try {
     const product = await ProductsModel.findById(productId);
 
-    if (product.length === 0) return res.status(400).json({ error: "Product not found!" });
+    if (product.length === 0)
+      return res.status(400).json({ error: "Product not found!" });
 
     const updatedProduct = await ProductsModel.findByIdAndUpdate(
       productId,
       { title, rating, price, category },
       { new: true }
     );
-    return res
-      .status(200)
-      .json({
-        message: "Product updated successfully!",
-        product: updatedProduct,
-      });
+    return res.status(200).json({
+      message: "Product updated successfully!",
+      product: updatedProduct,
+    });
   } catch (error) {
     return res.status(500).json(error);
   }
@@ -95,8 +128,7 @@ export const DeleteProduct = async (req, res) => {
 
     await ProductsModel.findByIdAndDelete(productId);
 
-    return res.status(200).json({message: "Product deleted successfully!"});
-    
+    return res.status(200).json({ message: "Product deleted successfully!" });
   } catch (error) {
     return res.status(500).json(error);
   }
