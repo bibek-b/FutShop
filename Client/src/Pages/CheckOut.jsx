@@ -86,7 +86,7 @@ const CheckOut = () => {
   const makePayment = async () => {
     const stripe = await loadStripe(secret);
     const body = {
-      products: [directBuy] ?? productList,
+      products: directBuy ? [directBuy] : productList,
       quantity: directBuy ? 1 : quantity,
     };
 

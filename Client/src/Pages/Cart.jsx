@@ -67,7 +67,7 @@ const Cart = () => {
 
   const handleCheckout = () => {
     setIsBuyAllCart(true);
-    nav("/Bibek_Bk_Cart/cartDetails/checkout", {state: {quantity}});
+    nav("/cartDetails/checkout", {state: {quantity}});
   };
   const updateSubtotal = (quantities) => {
     const newSubtotal = carts.reduce((acc, item, i) => {
