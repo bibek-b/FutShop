@@ -2,14 +2,22 @@ import { createPortal } from "react-dom";
 import { useContext } from "react";
 import { ProductContext } from "../Context/ProductContext";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../Context/UserContext";
 
 const CustomPopupModal = ({ children, onClose, cart, quantity, directBuy }) => {
+
+  const { user } = useContext(UserContext);
   
   const { isBuyNow } = useContext(ProductContext);
-console.log(quantity)
   const nav = useNavigate();
 
   const handleBuyNow = () => {
+    if(!user) {
+       alert("Please login/register to buy this item");
+       onClose();
+       return;
+      
+    }
     nav("/cartDetails/checkout", {state: { cart, quantity, directBuy}})
   }
 

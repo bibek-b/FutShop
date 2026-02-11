@@ -33,7 +33,7 @@ const FeaturedPicks = () => {
                     <img src={item.img}
                     alt={item.label}
                     className={`w-[250px] object-cover rounded ${item.className || ''} hover:scale-105 transtion-all duration-300 ease-in-out`} />
-                    <Link to={`/Bibek_Bk_Cart/products/${item.label}`} className='border border-gray-500 px-4 py-2 rounded-full cursor-pointer hover:bg-black hover:text-white hover:border-0 transition-all duration-300 ease-in'>{item.label}</Link>
+                    <Link to={`/products/${item.label}`} className='border border-gray-500 px-4 py-2 rounded-full cursor-pointer hover:bg-black hover:text-white hover:border-0 transition-all duration-300 ease-in'>{item.label}</Link>
                     </motion.div>
                 ))}
         </div>

@@ -102,7 +102,7 @@ const Cards = ({ id, rating, title, price }) => {
 
   return (
     <>
-      {showModal && user && (
+      {showModal  && (
         <CustomPopupModal
           onClose={() => setShowModal(false)}
           directBuy={directBuy}
