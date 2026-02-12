@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import apiCall from "../Custom-Hooks/apiCall";
 import { useContext } from "react";
 import { UserContext } from "../Context/UserContext";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const location = useLocation();
@@ -24,14 +25,14 @@ const Login = () => {
       const res = await apiCall.post("/auth/user/login", {email: eml, password: psw});
 
       if(res) {
-        alert("Login successful!");
+        toast.success("Login successful!");
         setIsLoggedIn(true);
         nav("/");
       } else {
-        alert("Failed to login. Please try again!")
+        toast.error("Failed to login. Please try again!")
       }
     } catch (error) {
-      alert(error.response.data?.error ||"Something went wrong. Please try again!");
+      toast.error(error.response.data?.error ||"Something went wrong. Please try again!");
     }
   }
 

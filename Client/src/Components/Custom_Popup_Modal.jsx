@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { ProductContext } from "../Context/ProductContext";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../Context/UserContext";
+import { toast } from "react-toastify";
 
 const CustomPopupModal = ({ children, onClose, cart, quantity, directBuy }) => {
 
@@ -13,7 +14,7 @@ const CustomPopupModal = ({ children, onClose, cart, quantity, directBuy }) => {
 
   const handleBuyNow = () => {
     if(!user) {
-       alert("Please login/register to buy this item");
+       toast.error("Please login/register to buy this item");
        onClose();
        return;
       

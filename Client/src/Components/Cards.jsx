@@ -14,6 +14,7 @@ import jerseyPlaceholderImg from "../assets/jersey-placeholderImage.jpg";
 import glovesPlaceholderImg from "../assets/gloves-placeholderImage.jpg";
 import placeholderImage from "../assets/placeholderImage.jpg";
 import { useWishlist } from "../Context/WishListContex";
+import {toast} from 'react-toastify';
 
 const Cards = ({ id, rating, title, price }) => {
   const [product, setProduct] = useState([]);
@@ -63,7 +64,7 @@ const Cards = ({ id, rating, title, price }) => {
 
   const handleAdd = () => {
     if (!user) {
-      alert("Please login to add product to cart!");
+      toast.error("Please login to add product to cart!");
       return;
     }
 

@@ -3,9 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import apiCall from "../Custom-Hooks/apiCall";
 import { useContext } from "react";
 import { UserContext } from "../Context/UserContext";
+import { toast } from "react-toastify";
 
 const Register = () => {
-
   const nav = useNavigate();
     const { setIsLoggedIn } = useContext(UserContext);
   
@@ -16,7 +16,7 @@ const Register = () => {
     const {password, confirmPassword, username, email } = e.target;
 
     if(password.value !== confirmPassword.value){
-      alert("Passwords don't match!");
+      toast.error("Passwords don't match!");
     }
     const userNm = username.value;
     const eml = email.value;
@@ -26,15 +26,15 @@ const Register = () => {
     try {
      const res = await apiCall.post('/auth/user/register', {username : userNm, email: eml, password: psw, confirmPassword: confPsw});
      if(res){
-      alert("Registration Successful!");
+      toast.success("Registration Successful!");
        setIsLoggedIn(true);
       nav("/");
      } else {
-      alert("Failed to register. Please try again!");
+      toast.error("Failed to register. Please try again!");
      }
       
     } catch (error) {
-      alert("Something went wrong.Please try again!");
+      toast.error(error.response.data.error || "Something went wrong.Please try again!");
     }
     
 
