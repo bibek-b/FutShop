@@ -7,24 +7,30 @@ import { UserContextProvider } from "./Context/UserContext.jsx";
 import { ProductContextProvider } from "./Context/ProductContext.jsx";
 import { WishlistProvider } from "./Context/WishListContex.jsx";
 import { ToastContainer } from "react-toastify";
+import { LoaderContextProvider } from "./Context/LoaderContext.jsx";
+import GlobalLoader from "./Components/common/GlobalLoader.jsx";
 
 createRoot(document.getElementById("root")).render(
-  <UserContextProvider>
-    <WishlistProvider>
-      <ProductContextProvider>
-        <CartContextProvider>
-          <StrictMode>
-            <App />
-            <ToastContainer
-             position="top-right"
-             autoClose={3000}
-             hideProgressBar={false}
-             pauseOnFocus
-             theme="colored"
+  <LoaderContextProvider>
+    <UserContextProvider>
+      <WishlistProvider>
+        <ProductContextProvider>
+          <CartContextProvider>
+            <StrictMode>
+              <App />
+              <ToastContainer
+                position="top-center"
+                autoClose={3000}
+                hideProgressBar={false}
+                pauseOnFocus
+                theme="colored"
               />
-          </StrictMode>
-        </CartContextProvider>
-      </ProductContextProvider>
-    </WishlistProvider>
-  </UserContextProvider>,
+              <GlobalLoader />
+            </StrictMode>
+          </CartContextProvider>
+        </ProductContextProvider>
+      </WishlistProvider>
+    </UserContextProvider>
+    ,
+  </LoaderContextProvider>,
 );
