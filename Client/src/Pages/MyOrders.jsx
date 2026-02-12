@@ -6,9 +6,10 @@ const MyOrders = () => {
   const { user } = useContext(UserContext)
   const { carts } = useContext(CartContext)
 
+
   const userOrders = carts?.filter(c => c.userId === user?._id);
 
- const totalPrice = userOrders.reduce((sum, item) => {
+ const totalPrice = userOrders?.reduce((sum, item) => {
     const quantity = item.quantity || 1;
     return sum + item.price * quantity;
   }, 0);
@@ -17,7 +18,7 @@ const MyOrders = () => {
     <div className="min-h-screen pt-20 flex flex-col items-center">
       <h1 className="text-2xl font-bold mb-6">My Orders</h1>
 
-      {userOrders && userOrders.length > 0 ? (
+      {((userOrders && userOrders.length > 0) || carts)  ? (
         <table className="table-auto border-collapse border border-gray-300">
           <thead>
             <tr>
@@ -28,7 +29,7 @@ const MyOrders = () => {
             </tr>
           </thead>
           <tbody>
-            {userOrders.map(c => (
+            {userOrders?.map(c => (
               <tr key={c.id}>
                 <td className="border border-gray-300 px-4 py-2">{c.title}</td>
                 <td className="border border-gray-300 px-4 py-2">{c.quantity || 1}</td>

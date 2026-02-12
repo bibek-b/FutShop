@@ -38,9 +38,9 @@ const Navbar = () => {
       </div>
 
       <div className='flex gap-8'>
-      <Link to='/addProduct' className='flex flex-col items-center justify-center cursor-pointer hover:scale-105 transition-all duration-500 text-lg'>
+    {(user && user.role === "admin") &&   <Link to='/addProduct' className='flex flex-col items-center justify-center cursor-pointer hover:scale-105 transition-all duration-500 text-lg'>
           <span>Add Product</span>
-        </Link>
+        </Link>}
       {user &&     <Link to='/myorders' className='flex flex-col items-center justify-center cursor-pointer hover:scale-105 transition-all duration-500 text-lg'>
           <span>My Orders</span>
         </Link>}
