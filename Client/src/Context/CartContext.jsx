@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { useState } from "react";
 import { createContext } from "react";
 import { UserContext } from "./UserContext";
+import { toast } from "react-toastify";
 
 export const CartContext = createContext();
 
@@ -40,9 +41,9 @@ export const CartContextProvider = ({ children }) => {
       
       localStorage.setItem("cartProducts", JSON.stringify(updatedCart));
       setCarts((prev) => [...prev, product]);
-      alert("Product added to cart!")
+      toast.success("Product added to cart!")
     } else {
-      alert("This product is already in cart!");
+      toast.error("This product is already in cart!");
       return;
     }
   };
@@ -55,9 +56,9 @@ export const CartContextProvider = ({ children }) => {
       const updatedCart = existingCart.filter(e => e.id !== productId);
       localStorage.setItem("cartProducts", JSON.stringify(updatedCart));
       setCarts(updatedCart);
-      alert("Product removed from cart!");
+      toast.success("Product removed from cart!");
     } else {
-      alert("The product is not in cart!")
+      toast.error("The product is not in cart!")
     }
 
   };

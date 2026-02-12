@@ -26,7 +26,7 @@ const Cart = () => {
   useEffect(() => {
     setIsBuyNow(false);
   }, []);
-  console.log({carts})
+
   useEffect(() => {
     if (carts && carts.length > 0) {
       setQuantity(Array(carts.length).fill(1));
@@ -66,6 +66,7 @@ const Cart = () => {
   };
 
   const handleCheckout = () => {
+    
     setIsBuyAllCart(true);
     nav("/cartDetails/checkout", {state: {quantity}});
   };

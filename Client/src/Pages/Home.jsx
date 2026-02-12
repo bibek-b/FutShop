@@ -1,4 +1,3 @@
-
 import FeaturedPicks from "../Components/FeaturedPicks";
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -8,14 +7,14 @@ import { useContext } from "react";
 import { ProductContext } from "../Context/ProductContext";
 
 const Home = () => {
-
-    const { showModal, setShowModal } = useContext(ProductContext);
+  const { showModal, setShowModal } = useContext(ProductContext);
 
   useEffect(() => {
-    if(showModal){
+    if (showModal) {
       setShowModal(true);
     }
-  },[showModal])
+  }, [showModal]);
+  
   return (
     <div className="text-center space-y-5 overflow-auto">
       <div className="  mt-20  w-full  h-[90vh] ">
@@ -25,7 +24,10 @@ const Home = () => {
             <p className="text-lg">
               Get official jerseys, boots & more from top teams.
             </p>
-            <button onClick= {() => window.scrollTo({top: 750, behavior: "smooth"})} className="bg-gradient-to-r from-blue-900 from-50% to-purple-800 to-80% text-white px-6 py-2 mt-5 cursor-pointer hover:scale-105 duration-300 transition-all rounded-full">
+            <button
+              onClick={() => window.scrollTo({ top: 750, behavior: "smooth" })}
+              className="bg-gradient-to-r from-blue-900 from-50% to-purple-800 to-80% text-white px-6 py-2 mt-5 cursor-pointer hover:scale-105 duration-300 transition-all rounded-full"
+            >
               Shop now
             </button>
           </div>
