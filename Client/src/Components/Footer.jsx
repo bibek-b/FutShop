@@ -5,7 +5,9 @@ import { FaYoutube, FaInstagram, FaPinterest, FaTiktok } from "react-icons/fa6";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-800 bg-opacity-90 text-white pt-10 pb-4 mt-15">
+  <>
+      <footer className="bg-gray-800 bg-opacity-90 text-white pt-5 pb-4 mt-15 ">
+    <span className="text-center w-full items-center flex justify-center mb-10 italic text-sm">“This is a personal portfolio project. Not affiliated with or endorsed by any football club.”</span>
       <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between gap-8">
         {/* About Us */}
         <div>
@@ -66,6 +68,7 @@ const Footer = () => {
         &copy; {new Date().getFullYear()} FutShop. All rights reserved.
       </div>
     </footer>
+  </>
   )
 }
 
