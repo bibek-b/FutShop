@@ -4,16 +4,27 @@ import { useState } from "react";
 import apiCall from "../Custom-Hooks/apiCall.js";
 import Cards from "../Components/Cards.jsx";
 import { Suspense } from "react";
+import { toast } from "react-toastify";
+import { useContext } from "react";
+import { LoaderContext } from "../Context/LoaderContext.jsx";
 
 const Products = () => {
   const { productCategory } = useParams();
   const [products, setProducts] = useState([]);
+  const { showLoading, hideLoading } = useContext(LoaderContext);
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
     const fetchProductByCategory = async () => {
-      const res = await apiCall.get("/products/category/" + productCategory);
-      setProducts(res.data);
+      try {
+        showLoading();
+        const res = await apiCall.get("/products/category/" + productCategory);
+        setProducts(res.data);
+      } catch (error) {
+        toast.error(error.response.data.error || "Error fetching products")
+      } finally {
+        hideLoading()
+      }
     };
     fetchProductByCategory();
   }, [productCategory]);

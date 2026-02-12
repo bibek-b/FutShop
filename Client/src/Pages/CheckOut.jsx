@@ -8,6 +8,7 @@ import { useState } from "react";
 import { UserContext } from "../Context/UserContext";
 import { loadStripe } from "@stripe/stripe-js";
 import apiCall from "../Custom-Hooks/apiCall";
+import { LoaderContext } from "../Context/LoaderContext";
 
 const CheckOut = () => {
   const [productList, setProductList] = useState([]);
@@ -30,6 +31,7 @@ const CheckOut = () => {
   const { user } = useContext(UserContext);
   const { isBuyAllCart } = useContext(CartContext);
   const nav = useNavigate();
+  const {showLoading, hideLoading } = useContext(LoaderContext);
 
   useEffect(() => {
     if (!user) {
@@ -84,6 +86,8 @@ const CheckOut = () => {
     "pk_test_51RoeLf00kSCIOUlPJjh6MauDGZFWrJyQVWwUkSpRezbWhsr8bmdeFPAyGFomkKV4kGM8Fc9nZVDsLlYEneM7h0QO00DKJsoFCx";
 
   const makePayment = async () => {
+    if(!formValid) return;
+    
     const stripe = await loadStripe(secret);
     const body = {
       products: directBuy ? [directBuy] : productList,
@@ -91,6 +95,7 @@ const CheckOut = () => {
     };
 
     try {
+      showLoading();
       const response = await apiCall.post(
         "/payment/create-checkout-session",
         body,
@@ -106,6 +111,8 @@ const CheckOut = () => {
     } catch (error) {
       console.log("payment error:", error.response?.data || error.message);
       alert("Something went wrong. Please try again!");
+    } finally{
+      hideLoading()
     }
   };
   return (
