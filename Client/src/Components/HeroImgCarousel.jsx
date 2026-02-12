@@ -30,7 +30,7 @@ const HeroImgCarousel = () => {
         <img
           src={src}
           alt="heroBg"
-          className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-900 ease-in-out rounded-lg cursor-pointer ${
+          className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-900 ease-in-out rounded-lg  ${
             idx === current ? "opacity-100 z-10" : "opacity-0 z-0"
           }`}
         />
@@ -42,10 +42,10 @@ const HeroImgCarousel = () => {
           <button
             key={idx}
             onClick={() => setCurrent(idx)}
-            className={`w-2 h-2 rounded-full ${
+            className={`w-2.5 h-2.5 rounded-full cursor-pointer hover:scale-[1.2] transition-discrete duration-300  ${
               idx === current ? "bg-white" : "bg-gray-400"
             }`}
-          ></button>
+         />
         ))}
       </div>
     </div>
