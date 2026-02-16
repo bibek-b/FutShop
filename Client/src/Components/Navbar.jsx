@@ -81,7 +81,7 @@ const Navbar = () => {
         <Link
           to="/"
           className="text-2xl font-black tracking-widest text-white shrink-0 hover:opacity-80 transition-opacity"
-          // style={{ fontFamily: 'Georgia, serif' }}
+          style={{ fontFamily: 'Georgia, serif' }}
         >
           FUT<span className="text-blue-500">SHOP</span>
         </Link>
