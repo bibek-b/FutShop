@@ -128,9 +128,8 @@ const Cards = ({ id, rating, title, price }) => {
       toast.error("Please login to add to wishlist!");
       return;
     }
-    addToWishlist({ id, userId: user._id, title, price, rating });
+    addToWishlist({ id, userId: user._id, title, price, rating, category: formattedCategory });
   };
-
   return (
     <>
       {showModal && (

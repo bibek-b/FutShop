@@ -56,7 +56,6 @@ const Wishlist = () => {
     });
     toast.success("Added to cart!");
   };
-
   return (
     <div className="min-h-screen bg-[#07070d] text-white px-6 md:px-16 py-10">
       {/* Header */}
@@ -101,7 +100,7 @@ const Wishlist = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {wishlist.map((item) => {
-            const cat = item.title?.toLowerCase().trim();
+            const cat = item.category?.toLowerCase().trim();
             const config = categoryConfig[cat] ?? fallback;
             const inCart = carts?.some((c) => c.id === item.id);
 
