@@ -6,84 +6,93 @@ import { UserContext } from "../Context/UserContext";
 import { toast } from "react-toastify";
 
 const Login = () => {
-  const location = useLocation();
+  const location       = useLocation();
   const passedUsername = location?.state;
-
   const { setIsLoggedIn } = useContext(UserContext);
-
   const nav = useNavigate();
 
   const handleSubmit = async e => {
     e.preventDefault();
-
     const { email, password } = e.target;
-
-    const eml = email.value;
-    const psw = password.value;
-
     try {
-      const res = await apiCall.post("/auth/user/login", {email: eml, password: psw});
-
-      if(res) {
+      const res = await apiCall.post("/auth/user/login", { email: email.value, password: password.value });
+      if (res) {
         toast.success("Login successful!");
         setIsLoggedIn(true);
         nav("/");
       } else {
-        toast.error("Failed to login. Please try again!")
+        toast.error("Failed to login. Please try again!");
       }
     } catch (error) {
-      toast.error(error.response.data?.error ||"Something went wrong. Please try again!");
+      toast.error(error.response.data?.error || "Something went wrong. Please try again!");
     }
-  }
+  };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-200 from-40% to-purple-200 to-60%">
-      <div className="bg-white rounded-lg shadow-lg h-115 p-8 w-95">
-        <div className='text-center mb-4'>
-          <h1 className="text-3xl font-bold text-center text-blue-600 mb-10 tracking-wide">FUTSHOP <hr  className='border border-gray-400 mt-4'/></h1>
-        <h2 className="text-3xl font-[900]  ">Welcome {passedUsername}</h2>
-        <span className='text-[12px] opacity-60'>Please login to your account</span>
-        </div>
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          {/* Username with FaRegUser */}
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-              <FaRegUser className="w-5 h-5" />
-            </span>
-            <input
-              type="email"
-              placeholder="Email"
-              name="email"
-              className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-700"
-              required
-            />
+    <div className="min-h-screen flex items-center justify-center bg-[#07070d] px-4">
+      {/* Glow blobs */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-1/3 -left-32 w-[400px] h-[400px] rounded-full"
+          style={{ background: "radial-gradient(circle, rgba(37,99,235,0.12) 0%, transparent 70%)" }} />
+        <div className="absolute bottom-1/4 right-0 w-[350px] h-[350px] rounded-full"
+          style={{ background: "radial-gradient(circle, rgba(124,58,237,0.1) 0%, transparent 70%)" }} />
+      </div>
+
+      <div className="relative w-full max-w-sm">
+        {/* Card */}
+        <div className="bg-[#12121a] border border-white/8 rounded-2xl p-8 shadow-2xl shadow-black/50">
+
+          {/* Logo */}
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-black tracking-widest text-white" style={{ fontFamily: "Georgia, serif" }}>
+              FUT<span className="text-blue-500">SHOP</span>
+            </h1>
+            <div className="w-8 h-0.5 bg-blue-500 rounded-full mx-auto mt-3 mb-6" />
+            <h2 className="text-2xl font-black text-white">
+              {passedUsername ? `Welcome back, ${passedUsername}` : "Welcome back"}
+            </h2>
+            <p className="text-sm text-white/40 mt-1">Sign in to your account</p>
           </div>
-          {/* Password with FaLock */}
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-              <FaLock className="w-5 h-5" />
-            </span>
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-700"
-              required
-              minLength={8}
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full py-2 outline-0 cursor-pointer rounded-full bg-blue-600 text-white font-semibold mt-2 hover:bg-blue-700 "
-          >
-            LOGIN
-          </button>
-        </form>
-        <div className="mt-4 text-center">
-          <span className="text-gray-600">Don't have an account? </span>
-          <Link to="/register" className="text-blue-600 hover:underline font-semibold">
-            Register
-          </Link>
+
+          {/* Form */}
+          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+            <div className="relative">
+              <FaRegUser className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
+              <input
+                type="email"
+                name="email"
+                placeholder="Email address"
+                required
+                className="w-full h-11 bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 text-white text-sm placeholder-white/25 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+              />
+            </div>
+
+            <div className="relative">
+              <FaLock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                required
+                minLength={8}
+                className="w-full h-11 bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 text-white text-sm placeholder-white/25 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-full h-11 rounded-xl bg-blue-600 hover:bg-blue-500 active:scale-[0.98] text-white font-bold text-sm tracking-wide transition-all duration-200 cursor-pointer shadow-lg shadow-blue-500/20 mt-1"
+            >
+              Sign In
+            </button>
+          </form>
+
+          <p className="text-center text-sm text-white/40 mt-6">
+            Don't have an account?{" "}
+            <Link to="/register" className="text-blue-400 hover:text-blue-300 font-semibold transition-colors">
+              Register
+            </Link>
+          </p>
         </div>
       </div>
     </div>
