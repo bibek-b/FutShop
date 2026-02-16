@@ -69,7 +69,7 @@ const Home = () => {
             <div className="flex items-center gap-4 justify-center md:justify-start pt-2">
               <button
                 onClick={() => window.scrollTo({ top: 750, behavior: "smooth" })}
-                className="px-7 py-3 bg-blue-600 hover:bg-blue-500 active:scale-95 text-white text-sm font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-blue-600/30 cursor-pointer"
+                className="px-7 py-3 bg-blue-600 hover:shadow-[0_0_36px_#155dfc] active:scale-95 text-white text-sm font-semibold rounded-xl transition-all duration-200  shadow-[0_0_24px_#155dfc] cursor-pointer"
               >
                 Shop Now
               </button>
