@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
-import CustomConfirmModal from "./CustomConfirmModal";
 import { CartContext } from "../Context/CartContext";
 import { FaHeart, FaRegHeart, FaCheck } from "react-icons/fa";
 import { FaXmark, FaCartShopping, FaBolt, FaStar } from "react-icons/fa6";
@@ -10,6 +9,8 @@ import { ProductContext } from "../Context/ProductContext";
 import { UserContext } from "../Context/UserContext";
 import { useWishlist } from "../Context/WishListContex";
 import { toast } from "react-toastify";
+import ConfirmModal from "./common/ConfirmModal";
+import { ConfirmModalContext } from "../Context/ConfirmModalContext";
 
 // Category → gradient + icon config
 const categoryConfig = {
@@ -91,7 +92,6 @@ const ProductImagePlaceholder = ({ category, title }) => {
 const Cards = ({ id, rating, title, price }) => {
   const [isAddedToCart, setIsAddedToCart] = useState(false);
   const [quantity] = useState(1);
-  const [showModal, setShowModal] = useState(false);
 
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const { handleAddToCart, handleRemoveFromCart, carts } =
@@ -99,6 +99,7 @@ const Cards = ({ id, rating, title, price }) => {
   const { setIsBuyNow } = useContext(ProductContext);
   const { user } = useContext(UserContext);
   const { productCategory } = useParams();
+  const { showConfirmModal } = useContext(ConfirmModalContext);
 
   const formattedCategory = productCategory?.toLowerCase().trim();
   const inCart =
@@ -128,24 +129,42 @@ const Cards = ({ id, rating, title, price }) => {
       toast.error("Please login to add to wishlist!");
       return;
     }
-    addToWishlist({ id, userId: user._id, title, price, rating, category: formattedCategory });
+    addToWishlist({
+      id,
+      userId: user._id,
+      title,
+      price,
+      rating,
+      category: formattedCategory,
+    });
   };
+
+  const handleBuyNowConfirm = () => {
+showConfirmModal();
+  }
+  // const { user } = useContext(UserContext);
+// const nav = useNavigate();
+
+const buyNowConfirmed = () => {
+  if (!user) {
+    toast.error("Please login to buy this item");
+    onClose();
+    return;
+  }
+  nav("/cartDetails/checkout", { state: {  quantity, directBuy: {title, price} } });
+};
   return (
-    <>
-      {showModal && (
-        <CustomConfirmModal
-        ConfirmIcon={FaBolt }
-        confirmColor="blue"
-        confirmBtnTxt="Yes, Buy Now"
-          onClose={() => setShowModal(false)}
-          directBuy={{ title, price, quantity }}
-          detail={ "Are You Sure? You Want to Buy Now!"}
-        >
-         
-        </CustomConfirmModal>
-      )}
 
       <div className="group relative flex flex-col rounded-2xl overflow-hidden bg-[#12121a] border border-white/8 hover:border-blue-500/50 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/10 w-[280px]">
+      <ConfirmModal
+        ConfirmIcon={FaBolt}
+        confirmColor="blue"
+        confirmBtnTxt="Yes, Buy Now"
+        onClose={() => setShowModal(false)}
+        onConfirm={buyNowConfirmed}
+        directBuy={{ title, price, quantity }}
+        detail={"Are You Sure? You Want to Buy Now!"}
+      />
         {/* ── IMAGE AREA ── */}
         <div className="relative h-[220px] overflow-hidden">
           {/* Top accent line */}
@@ -182,7 +201,7 @@ const Cards = ({ id, rating, title, price }) => {
           )}
 
           {/* Price floats over gradient */}
-          <div className="absolute bottom-3 left-4 z-20">
+          <div className="absolute -bottom-2 left-4  z-20 ">
             <span className="text-lg font-black text-white drop-shadow-lg">
               RS. {price}
             </span>
@@ -213,10 +232,7 @@ const Cards = ({ id, rating, title, price }) => {
 
           <div className="flex gap-2">
             <button
-              onClick={() => {
-                setShowModal(true);
-                setIsBuyNow(true);
-              }}
+              onClick={handleBuyNowConfirm}
               className="flex-1 flex items-center justify-center gap-1.5 h-9 rounded-xl bg-blue-600 hover:bg-blue-500 active:scale-95 text-white text-xs font-bold tracking-wide transition-all duration-200 cursor-pointer shadow-lg shadow-blue-500/20"
             >
               <FaBolt className="w-3 h-3" />
@@ -243,7 +259,6 @@ const Cards = ({ id, rating, title, price }) => {
           </div>
         </div>
       </div>
-    </>
   );
 };
 

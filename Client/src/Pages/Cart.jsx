@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { CartContext } from "../Context/CartContext";
 import { ProductContext } from "../Context/ProductContext";
 import { UserContext } from "../Context/UserContext";
-import CustomPopupModal from "../Components/CustomConfirmModal";
 import { FaTrash, FaMinus, FaPlus, FaBolt } from "react-icons/fa6";
 import { GiSoccerBall, GiGloves, GiShirt } from "react-icons/gi";
 import { PiSneakerFill } from "react-icons/pi";
