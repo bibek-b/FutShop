@@ -1,6 +1,5 @@
 import { FaFacebookSquare } from "react-icons/fa";
 import { FaSquareXTwitter, FaYoutube, FaInstagram, FaPinterest, FaTiktok } from "react-icons/fa6";
-import { Link } from "react-router-dom";
 
 const socials = [
   { href: "https://facebook.com",  icon: <FaFacebookSquare className="w-5 h-5" />, hover: "hover:text-blue-400"  },
@@ -18,7 +17,7 @@ const links = {
 
 const Footer = () => {
   return (
-    <footer className="bg-[#0d0d14] border-t border-white/8 text-white mt-16">
+    <footer className="bg-[#0d0d14] border-t border-white/8 text-white">
 
       {/* Disclaimer banner */}
       <div className="border-b border-white/6 py-2.5 px-6 text-center">

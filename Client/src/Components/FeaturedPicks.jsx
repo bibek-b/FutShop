@@ -25,7 +25,6 @@ const categories = [
 const FeaturedPicks = () => {
   return (
     <motion.section
-      className="flex flex-col items-center gap-10 py-16 px-6"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.15 }}

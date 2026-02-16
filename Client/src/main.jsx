@@ -31,6 +31,5 @@ createRoot(document.getElementById("root")).render(
         </ProductContextProvider>
       </WishlistProvider>
     </UserContextProvider>
-    ,
   </LoaderContextProvider>,
 );
