@@ -1,291 +1,264 @@
 import nepal from "../assets/nepal-flag-icon.webp";
-import boots from "../assets/boots.webp";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import { useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import { CartContext } from "../Context/CartContext";
-import { useState } from "react";
 import { UserContext } from "../Context/UserContext";
 import { loadStripe } from "@stripe/stripe-js";
 import apiCall from "../Custom-Hooks/apiCall";
 import { LoaderContext } from "../Context/LoaderContext";
+import { FaLock, FaTruck, FaTag } from "react-icons/fa";
+import { FaBoxOpen } from "react-icons/fa6";
+import { GiSoccerBall, GiGloves, GiShirt } from "react-icons/gi";
+import { PiSneakerFill } from "react-icons/pi";
+
+const FIELDS = [
+  { key: "fullName",  label: "Full Name",      type: "text",  placeholder: "John Doe"          },
+  { key: "email",     label: "Email Address",   type: "email", placeholder: "john@example.com"  },
+  { key: "province",  label: "Province",        type: "text",  placeholder: "Bagmati"           },
+  { key: "city",      label: "City",            type: "text",  placeholder: "Kathmandu"         },
+  { key: "address",   label: "Street Address",  type: "text",  placeholder: "123 Main St"       },
+];
+
+// Reuse same placeholder icons as Cards
+const categoryConfig = {
+  "football balls":   { gradient: "from-blue-900 to-indigo-900",   icon: <GiSoccerBall  className="w-7 h-7 text-blue-300/70"   /> },
+  "football boots":   { gradient: "from-orange-900 to-rose-900",   icon: <PiSneakerFill className="w-7 h-7 text-orange-300/70" /> },
+  "football jerseys": { gradient: "from-green-900 to-teal-900",    icon: <GiShirt       className="w-7 h-7 text-green-300/70"  /> },
+  "gk gloves":        { gradient: "from-purple-900 to-fuchsia-900",icon: <GiGloves      className="w-7 h-7 text-purple-300/70" /> },
+};
+const fallback = { gradient: "from-gray-900 to-slate-800", icon: <GiSoccerBall className="w-7 h-7 text-white/20" /> };
+
+const ItemThumb = ({ title }) => {
+  const key    = title?.toLowerCase().trim();
+  const config = Object.entries(categoryConfig).find(([k]) => key?.includes(k))?.[1] ?? fallback;
+  return (
+    <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${config.gradient} flex items-center justify-center shrink-0 border border-white/10`}>
+      {config.icon}
+    </div>
+  );
+};
+
+const inputClass = "w-full h-10 bg-white/5 border border-white/10 rounded-xl px-3 text-white text-sm placeholder-white/25 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200";
+const labelClass = "text-xs font-semibold text-white/50 uppercase tracking-wider mb-1.5 block";
 
 const CheckOut = () => {
   const [productList, setProductList] = useState([]);
-  const [subTotal, setSubTotal] = useState(0);
-  const [formValid, setFormValid] = useState(false);
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    phoneNum: null,
-    province: "",
-    city: "",
-    address: "",
-    // checked: false
+  const [subTotal, setSubTotal]       = useState(0);
+  const [formValid, setFormValid]     = useState(false);
+  const [agreed, setAgreed]           = useState(false);
+  const [formData, setFormData]       = useState({
+    fullName: "", email: "", phoneNum: "", province: "", city: "", address: "",
   });
-  const location = useLocation();
 
-  const cart = location?.state?.cart;
-  const directBuy = location?.state?.directBuy;
-  const quantity = location?.state?.quantity;
-  const { user } = useContext(UserContext);
-  const { isBuyAllCart } = useContext(CartContext);
-  const nav = useNavigate();
-  const {showLoading, hideLoading } = useContext(LoaderContext);
+  const location   = useLocation();
+  const cart       = location?.state?.cart;
+  const directBuy  = location?.state?.directBuy;
+  const quantity   = location?.state?.quantity;
+
+  const { user }                     = useContext(UserContext);
+  const { isBuyAllCart }             = useContext(CartContext);
+  const { showLoading, hideLoading } = useContext(LoaderContext);
+  const nav                          = useNavigate();
+
+  const DELIVERY = 100;
+  const total    = subTotal + DELIVERY;
 
   useEffect(() => {
-    if (!user) {
-      nav("/");
-      return;
-    }
-    window.scrollTo({ top: 0, behavior: "smooth" });
-
-    if (cart || directBuy) {
-      setSubTotal(cart?.price || directBuy?.price);
-    }
+    if (!user) { nav("/"); return; }
+    window.scrollTo({ top: 0 });
+    if (cart || directBuy) setSubTotal(cart?.price || directBuy?.price);
   }, []);
 
   useEffect(() => {
     const { fullName, email, phoneNum, province, city, address } = formData;
-    if (fullName && email && phoneNum && province && city && address) {
-      setFormValid(true);
-    }
-  }, [formData]);
+    setFormValid(!!(fullName && email && phoneNum && province && city && address && agreed));
+  }, [formData, agreed]);
 
   useEffect(() => {
-    if (!user) return;
-
-    if (isBuyAllCart) {
-      const allProducts = JSON.parse(localStorage.getItem("cartProducts"));
-      const userProducts = allProducts?.filter(
-        (item) => item.userId === user?._id,
-      );
-      if (!userProducts) return;
-      // const productPrices = userProducts.map(product => product.price);
-      const subTotal = userProducts?.reduce((accumulator, item, i) => {
-        const q = quantity?.[i] || 1;
-        return accumulator + item.price * q;
-      }, 0);
-      setSubTotal(subTotal);
-
-      setProductList(userProducts);
-    }
+    if (!user || !isBuyAllCart) return;
+    const allProducts  = JSON.parse(localStorage.getItem("cartProducts"));
+    const userProducts = allProducts?.filter((item) => item.userId === user?._id);
+    if (!userProducts) return;
+    const sub = userProducts.reduce((acc, item, i) => acc + item.price * (quantity?.[i] || 1), 0);
+    setSubTotal(sub);
+    setProductList(userProducts);
   }, [user]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
+  const handleChange = (field, value) => setFormData((prev) => ({ ...prev, [field]: value }));
 
-  const handleChange = (field, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
-  const secret =
+    const secret =
     "pk_test_51RoeLf00kSCIOUlPJjh6MauDGZFWrJyQVWwUkSpRezbWhsr8bmdeFPAyGFomkKV4kGM8Fc9nZVDsLlYEneM7h0QO00DKJsoFCx";
-
   const makePayment = async () => {
-    if(!formValid) return;
-    
+    if (!formValid) return;
     const stripe = await loadStripe(secret);
-    const body = {
-      products: directBuy ? [directBuy] : productList,
-      quantity: directBuy ? 1 : quantity,
-    };
-
+    const body   = { products: directBuy ? [directBuy] : productList, quantity: directBuy ? 1 : quantity };
     try {
       showLoading();
-      const response = await apiCall.post(
-        "/payment/create-checkout-session",
-        body,
-      );
-      const session = response.data;
-
-      const result = stripe.redirectToCheckout({
-        sessionId: session.id,
-      });
-      if (result.error) {
-        console.log(result.error);
-      }
+      const response = await apiCall.post("/payment/create-checkout-session", body);
+      const result   = await stripe.redirectToCheckout({ sessionId: response.data.id });
+      if (result.error) console.log(result.error);
     } catch (error) {
       console.log("payment error:", error.response?.data || error.message);
       alert("Something went wrong. Please try again!");
-    } finally{
-      hideLoading()
+    } finally {
+      hideLoading();
     }
   };
+
+  // Items to display in review panel
+  const reviewItems = productList.length > 0
+    ? productList.map((item, i) => ({ title: item.title, price: item.price, qty: quantity?.[i] || 1 }))
+    : [{ title: cart?.title || directBuy?.title, price: cart?.price || directBuy?.price, qty: quantity || 1 }];
+
   return (
-    <div className="flex flex-col items-center  bg-blue-100 h-[100%] p-6">
-      <div className="p-2 shadow-lg bg-white rounded flex flex-col w-[80%] ">
-        <div>
-          <span className="text-4xl font-bold ">Checkout</span>
-          <hr className="mt-2 border-gray-400" />
-        </div>
-        <form
-          className="flex w-full  p-2 justify-between w-[50%]"
-          onSubmit={(e) => handleSubmit(e)}
-        >
-          <div className="space-y-6">
-            <h1 className="font-semibold text-xl ">Shipping Information</h1>
-            <div className="flex flex-col">
-              <label htmlFor="fullName">Full Name</label>
-              <input
-                required
-                className="border border-gray-300 rounded p-2 w-[90%] outline-0 placeholder:text-sm mt-2"
-                type="text"
-                placeholder="Enter full name"
-                value={formData.fullName}
-                onChange={(e) => handleChange("fullName", e.target.value)}
-              />
-            </div>
+    <div className="min-h-screen bg-[#07070d] text-white px-6 md:px-16 py-10">
 
-            <div className="flex flex-col">
-              <label htmlFor="email">Email Address</label>
-              <input
-                required
-                className="border border-gray-300 rounded p-2 w-[90%] outline-0 placeholder:text-sm mt-2"
-                type="email"
-                placeholder="Enter email address"
-                value={formData.email}
-                onChange={(e) => handleChange("email", e.target.value)}
-              />
-            </div>
+      {/* Header */}
+      <div className="mb-10">
+        <p className="text-xs font-bold tracking-[4px] uppercase text-blue-400 mb-2">Secure Checkout</p>
+        <h1 className="text-4xl md:text-5xl font-black tracking-tight">Checkout</h1>
+        <div className="w-10 h-0.5 bg-blue-500 rounded-full mt-3" />
+      </div>
 
-            <div className="relative flex flex-col">
-              <label htmlFor="phoneNum">Phone Number</label>
-              <img
-                src={nepal}
-                alt="Nepal"
-                className="w-6 absolute top-10 left-2"
-              />
-              <input
-                required
-                className="border border-gray-300 rounded pl-9 pt-2 pb-2 pr-2 w-[90%] outline-0 placeholder:text-sm mt-2"
-                type="tel"
-                placeholder="Enter phone number"
-                value={formData.phoneNum}
-                onChange={(e) => handleChange("phoneNum", e.target.value)}
-              />
-            </div>
+      <div className="flex flex-col lg:flex-row gap-8 max-w-6xl">
 
-            <div className="flex w-[600px]">
-              <div className="flex flex-col ">
-                <label htmlFor="province">Province</label>
-                <input
-                  required
-                  type="text"
-                  className="border border-gray-300 rounded p-2 w-[70%] outline-0 placeholder:text-sm mt-2"
-                  placeholder="Enter province"
-                  value={formData.province}
-                  onChange={(e) => handleChange("province", e.target.value)}
-                />
-              </div>
+        {/* ── LEFT: Shipping Form ── */}
+        <div className="flex-[1.2] flex flex-col gap-6">
+          <div className="bg-[#12121a] rounded-2xl border border-white/8 p-6">
+            <h2 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
+              <FaTruck className="text-blue-400 w-4 h-4" />
+              Shipping Information
+            </h2>
 
-              <div className="flex flex-col">
-                <label htmlFor="city">City</label>
-                <input
-                  required
-                  type="text"
-                  className="border border-gray-300 rounded p-2 w-[70%] outline-0 placeholder:text-sm mt-2"
-                  placeholder="Enter city"
-                  value={formData.city}
-                  onChange={(e) => handleChange("city", e.target.value)}
-                />
-              </div>
-
-              <div className="flex flex-col">
-                <label htmlFor="address">Address</label>
-                <input
-                  required
-                  type="text"
-                  className="border border-gray-300 rounded p-2 w-[70%] outline-0 placeholder:text-sm mt-2"
-                  placeholder="Enter address"
-                  value={formData.address}
-                  onChange={(e) => handleChange("address", e.target.value)}
-                />
-              </div>
-            </div>
-            <div className="flex gap-1 mt-4">
-              <input
-                type="checkbox"
-                value={formData.checked}
-                onChange={(e) => handleChange("checkbox", e.target.value)}
-                className="w-4 cursor-pointer"
-              />
-              <span className="text-sm opacity-70">
-                I have read and agree to the Terms and Conditions.
-              </span>
-            </div>
-          </div>
-          <span className="border border-gray-400 opacity-50 h-[66.2%] absolute right-184 top-[150px]"></span>
-          <div className="flex flex-col gap-8 w-[38%]">
-            <h1 className="font-bold text-xl">Review your Cart</h1>
-            <ul className="space-y-4 max-h-[190px] overflow-y-scroll">
-              {productList.length > 0 ? (
-                productList.map((item, idx) => (
-                  <li className="flex gap-4">
-                    <img
-                      src={boots}
-                      alt="product"
-                      className="w-20 h-20 object-cover rounded"
-                    />
-                    <div className="flex flex-col gap-3">
-                      <div className="flex flex-col">
-                        <span>{item?.title || "N/A"}</span>
-                        <span className="text-gray-500 text-[13px]">
-                          {quantity[idx] || 1 || "N/A"}x
-                        </span>
-                      </div>
-                      <span className="font-bold">
-                        Rs. {item?.price || "N/A"}
-                      </span>
-                    </div>
-                  </li>
-                ))
-              ) : (
-                <li className="flex gap-4">
-                  <img
-                    src={boots}
-                    alt="product"
-                    className="w-20 h-20 object-cover rounded"
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              {FIELDS.map(({ key, label, type, placeholder }) => (
+                <div key={key} className={key === "address" ? "sm:col-span-2" : ""}>
+                  <label className={labelClass}>{label}</label>
+                  <input
+                    required
+                    type={type}
+                    placeholder={placeholder}
+                    value={formData[key]}
+                    onChange={(e) => handleChange(key, e.target.value)}
+                    className={inputClass}
                   />
-                  <div className="flex flex-col gap-3">
-                    <div className="flex flex-col">
-                      <span>{cart?.title || directBuy?.title || "N/A"}</span>
-                      <span className="text-gray-500 text-[13px]">
-                        {quantity || 1}x
-                      </span>
-                    </div>
-                    <span className="font-bold">
-                      Rs. {cart?.price || directBuy?.price || "N/A"}
-                    </span>
+                </div>
+              ))}
+
+              {/* Phone with flag */}
+              <div className="sm:col-span-2">
+                <label className={labelClass}>Phone Number</label>
+                <div className="relative">
+                  <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5 pointer-events-none">
+                    <img src={nepal} alt="NP" className="w-5 h-4 object-cover rounded-sm" />
+                    <span className="text-white/40 text-sm">+977</span>
+                    <span className="text-white/20 text-sm">|</span>
                   </div>
-                </li>
-              )}
-            </ul>
-            <div className="space-y-4 mt-8">
-              <div className="flex gap-20">
-                <span className="opacity-70 w-[150px]">Subtotal</span>
-                <span>Rs. {subTotal}</span>
+                  <input
+                    required
+                    type="number"
+                    placeholder="98XXXXXXXX"
+                    value={formData.phoneNum}
+                    onChange={(e) => handleChange("phoneNum", e.target.value)}
+                    className={`${inputClass} pl-24`}
+                  />
+                </div>
               </div>
-              <div className="flex gap-20 ">
-                <span className="opacity-70 w-[150px]">Delivery Charge</span>
-                <span>Rs. 100</span>
-              </div>
-              <div className="flex gap-20 ">
-                <span className="opacity-70 w-[150px]">Total</span>
-                <span>Rs. {subTotal + 100}</span>
-              </div>
-              <button
-                onClick={makePayment}
-                className=" outline-0  flex justify-center bg-blue-600 text-white p-2 w-[70%] rounded cursor-pointer hover:bg-blue-700"
+            </div>
+
+            {/* T&C */}
+            <label className="flex items-start gap-3 mt-6 cursor-pointer group">
+              <div
+                onClick={() => setAgreed(a => !a)}
+                className={`mt-0.5 w-5 h-5 rounded-md border flex items-center justify-center shrink-0 transition-all duration-200 cursor-pointer ${
+                  agreed ? "bg-blue-600 border-blue-600" : "bg-white/5 border-white/20 group-hover:border-white/40"
+                }`}
               >
-                Order Now & Pay {formValid ? subTotal + 100 : null}
-              </button>
+                {agreed && <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>}
+              </div>
+              <span className="text-sm text-white/50 leading-relaxed">
+                I have read and agree to the{" "}
+                <span className="text-blue-400 hover:text-blue-300 cursor-pointer transition-colors">Terms and Conditions</span>.
+              </span>
+            </label>
+          </div>
+
+          {/* Trust badges */}
+          <div className="grid grid-cols-3 gap-3">
+            {[
+              { icon: <FaLock className="w-4 h-4 text-green-400" />,  label: "Secure Payment"    },
+              { icon: <FaTruck className="w-4 h-4 text-blue-400" />,  label: "Fast Delivery"     },
+              { icon: <FaTag className="w-4 h-4 text-purple-400" />,  label: "Best Price"        },
+            ].map(({ icon, label }) => (
+              <div key={label} className="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white/3 border border-white/6">
+                {icon}
+                <span className="text-xs text-white/50 font-medium">{label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── RIGHT: Order Review ── */}
+        <div className="flex-1 flex flex-col gap-4">
+          <div className="bg-[#12121a] rounded-2xl border border-white/8 p-6">
+            <h2 className="text-lg font-bold text-white mb-5 flex items-center gap-2">
+              <FaBoxOpen className="text-blue-400 w-4 h-4" />
+              Order Summary
+            </h2>
+
+            {/* Items */}
+            <div className="flex flex-col gap-3 max-h-[240px] overflow-y-auto pr-1 scrollbar-thin">
+              {reviewItems.map((item, i) => (
+                <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-white/3 border border-white/6">
+                  <ItemThumb title={item.title} />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-white/85 line-clamp-1">{item.title || "N/A"}</p>
+                    <p className="text-xs text-white/40 mt-0.5">Qty: {item.qty}</p>
+                  </div>
+                  <span className="text-sm font-bold text-white shrink-0">Rs. {item.price}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Divider */}
+            <div className="h-px bg-white/8 my-5" />
+
+            {/* Pricing breakdown */}
+            <div className="flex flex-col gap-3">
+              <div className="flex justify-between text-sm text-white/50">
+                <span>Subtotal</span>
+                <span>Rs. {subTotal.toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between text-sm text-white/50">
+                <span>Delivery Charge</span>
+                <span>Rs. {DELIVERY}</span>
+              </div>
+              <div className="h-px bg-white/6" />
+              <div className="flex justify-between items-center">
+                <span className="font-bold text-white">Total</span>
+                <span className="text-2xl font-black text-white">Rs. {total.toLocaleString()}</span>
+              </div>
             </div>
           </div>
-        </form>
+
+          {/* Pay button */}
+          <button
+            onClick={makePayment}
+            disabled={!formValid}
+            className={`w-full h-13 rounded-2xl text-white font-bold text-sm flex items-center justify-center gap-2 transition-all duration-200 cursor-pointer
+              ${formValid
+                ? "bg-blue-600 hover:bg-blue-500 shadow-lg shadow-blue-500/25 active:scale-[0.98]"
+                : "bg-white/8 border border-white/10 text-white/30 cursor-not-allowed"
+              }`}
+          >
+            <FaLock className="w-3.5 h-3.5" />
+            {formValid ? `Pay Rs. ${total.toLocaleString()}` : "Complete the form to continue"}
+          </button>
+
+          <p className="text-center text-xs text-white/25">
+            Powered by Stripe · 256-bit SSL encryption
+          </p>
+        </div>
       </div>
     </div>
   );
