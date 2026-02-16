@@ -1,10 +1,11 @@
 import FeaturedPicks from "../Components/FeaturedPicks";
 import { motion } from "framer-motion";
-import HeroMosaic from "../Components/HeroMosaic";
+import HeroImgCarousel from "../Components/HeroImgCarousel";
 import { useEffect, useContext, useRef } from "react";
 import { ProductContext } from "../Context/ProductContext";
 
-const TICKER = "🚚 Free Delivery  ·  🔒 Secure Payments  ·  🛡️ Authentic Products  ·  📦 Easy Returns  ·  ";
+const TICKER =
+  "🚚 Free Delivery  ·  🔒 Secure Payments  ·  🛡️ Authentic Products  ·  📦 Easy Returns  ·  ";
 
 const Home = () => {
   const { showModal, setShowModal } = useContext(ProductContext);
@@ -20,12 +21,12 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-[#07070d] text-white overflow-x-hidden">
-
       {/* ── HERO ── */}
       <section className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 pt-10">
-
-        {/* Background — static, no blur, GPU-friendly */}
-        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div
+          className="absolute inset-0 pointer-events-none"
+          aria-hidden="true"
+        >
           {/* Soft radial gradients via background-image — no filter blur needed */}
           <div
             className="absolute inset-0"
@@ -49,7 +50,6 @@ const Home = () => {
 
         {/* Hero content */}
         <div className="relative z-10 flex flex-col-reverse md:flex-row items-center justify-between gap-12 max-w-7xl mx-auto w-full">
-
           {/* Left: copy */}
           <motion.div
             className="flex-1 space-y-6 text-center md:text-left will-change-transform"
@@ -73,7 +73,8 @@ const Home = () => {
             </h1>
 
             <p className="text-base md:text-lg text-white/50 max-w-sm leading-relaxed">
-              Official jerseys, boots &amp; more from the world's top clubs — delivered to your door.
+              Official jerseys, boots &amp; more from the world's top clubs —
+              delivered to your door.
             </p>
 
             <div className="flex items-center gap-4 justify-center md:justify-start pt-2">
@@ -94,8 +95,8 @@ const Home = () => {
             <div className="flex items-center gap-8 justify-center md:justify-start pt-4">
               {[
                 { value: "50K+", label: "Happy Customers" },
-                { value: "200+", label: "Official Kits"    },
-                { value: "4.9★", label: "Avg. Rating"      },
+                { value: "200+", label: "Official Kits" },
+                { value: "4.9★", label: "Avg. Rating" },
               ].map(({ value, label }) => (
                 <div key={label} className="text-center md:text-left">
                   <p className="text-xl font-black text-white">{value}</p>
@@ -105,17 +106,8 @@ const Home = () => {
             </div>
           </motion.div>
 
-          {/* Right: mosaic */}
-          <motion.div
-            className="flex-1 flex justify-center will-change-transform"
-            initial={{ opacity: 0, scale: 0.93 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
-          >
-            <div className="relative rounded-2xl overflow-hidden ring-1 ring-white/10">
-              <HeroMosaic />
-            </div>
-          </motion.div>
+          {/* Right img carousel */}
+          <HeroImgCarousel />
         </div>
       </section>
 
@@ -125,12 +117,20 @@ const Home = () => {
         <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-[#07070d] to-transparent z-10 pointer-events-none" />
 
         {/* CSS-only ticker — zero JS, zero layout thrash */}
-        <div className="flex will-change-transform" style={{ animation: "ticker 28s linear infinite" }}>
-          {Array(8).fill(TICKER).map((t, i) => (
-            <span key={i} className="text-sm font-medium text-white/50 tracking-wide px-8 whitespace-nowrap">
-              {t}
-            </span>
-          ))}
+        <div
+          className="flex will-change-transform"
+          style={{ animation: "ticker 28s linear infinite" }}
+        >
+          {Array(8)
+            .fill(TICKER)
+            .map((t, i) => (
+              <span
+                key={i}
+                className="text-sm font-medium text-white/50 tracking-wide px-8 whitespace-nowrap"
+              >
+                {t}
+              </span>
+            ))}
         </div>
 
         <style>{`
