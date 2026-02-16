@@ -9,9 +9,11 @@ import { WishlistProvider } from "./Context/WishListContex.jsx";
 import { ToastContainer } from "react-toastify";
 import { LoaderContextProvider } from "./Context/LoaderContext.jsx";
 import GlobalLoader from "./Components/common/GlobalLoader.jsx";
+import { ConfirmModalContextProvider } from "./Context/ConfirmModalContext.jsx";
 
 createRoot(document.getElementById("root")).render(
-  <LoaderContextProvider>
+ <ConfirmModalContextProvider>
+   <LoaderContextProvider>
     <UserContextProvider>
       <WishlistProvider>
         <ProductContextProvider>
@@ -31,5 +33,6 @@ createRoot(document.getElementById("root")).render(
         </ProductContextProvider>
       </WishlistProvider>
     </UserContextProvider>
-  </LoaderContextProvider>,
+  </LoaderContextProvider>
+ </ConfirmModalContextProvider>,
 );
