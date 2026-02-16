@@ -1,15 +1,22 @@
 import { createPortal } from "react-dom";
 import { useContext } from "react";
-import { ProductContext } from "../Context/ProductContext";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../Context/UserContext";
 import { toast } from "react-toastify";
-import { FaXmark, FaBolt } from "react-icons/fa6";
+import { FaXmark } from "react-icons/fa6";
 
-const CustomConfirmModal = ({ children, onClose, cart, quantity, directBuy }) => {
-  const { user }     = useContext(UserContext);
-  const { isBuyNow } = useContext(ProductContext);
-  const nav          = useNavigate();
+const CustomConfirmModal = ({
+  confirmColor,
+  ConfirmIcon,
+  confirmBtnTxt,
+  detail,
+  onClose,
+  cart,
+  quantity,
+  directBuy,
+}) => {
+  const { user } = useContext(UserContext);
+  const nav = useNavigate();
 
   const handleBuyNow = () => {
     if (!user) {
@@ -23,10 +30,11 @@ const CustomConfirmModal = ({ children, onClose, cart, quantity, directBuy }) =>
   return createPortal(
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4"
-      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
     >
       <div className="relative bg-[#12121a] border border-white/10 rounded-2xl shadow-2xl shadow-black/60 w-full max-w-sm p-6">
-
         {/* Close button */}
         <button
           onClick={onClose}
@@ -37,13 +45,15 @@ const CustomConfirmModal = ({ children, onClose, cart, quantity, directBuy }) =>
         </button>
 
         {/* Icon */}
-        <div className="w-12 h-12 rounded-2xl bg-blue-500/15 border border-blue-500/25 flex items-center justify-center mb-4">
-          <FaBolt className="w-5 h-5 text-blue-400" />
+        <div
+          className={`w-12 h-12 rounded-2xl bg-${confirmColor}-500/15 border border-${confirmColor}-500/25 flex items-center justify-center mb-4`}
+        >
+          <ConfirmIcon className={`w-5 h-5 text-${confirmColor}-400`} />
         </div>
 
         {/* Message */}
         <h3 className="text-lg font-bold text-white mb-1">Confirm Purchase</h3>
-        <p className="text-sm text-white/50 leading-relaxed mb-6">{children}</p>
+        <p className="text-sm text-white/50 leading-relaxed mb-6">{detail}</p>
 
         {/* Divider */}
         <div className="h-px bg-white/8 mb-5" />
@@ -52,10 +62,10 @@ const CustomConfirmModal = ({ children, onClose, cart, quantity, directBuy }) =>
         <div className="flex gap-3">
           <button
             onClick={handleBuyNow}
-            className="flex-1 h-10 rounded-xl bg-blue-600 hover:bg-blue-500 active:scale-[0.98] text-white text-sm font-bold transition-all duration-200 cursor-pointer shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2"
+            className={`flex-1 h-10 rounded-xl bg-${confirmColor}-600 hover:bg-${confirmColor}-500 active:scale-[0.98] text-white text-sm font-bold transition-all duration-200 cursor-pointer shadow-lg shadow-${confirmColor}-500/20 flex items-center justify-center gap-2`}
           >
-            <FaBolt className="w-3.5 h-3.5" />
-            Yes, Buy Now
+            <ConfirmIcon className="w-3.5 h-3.5" />
+            {confirmBtnTxt}
           </button>
           <button
             onClick={onClose}
@@ -66,7 +76,7 @@ const CustomConfirmModal = ({ children, onClose, cart, quantity, directBuy }) =>
         </div>
       </div>
     </div>,
-    document.getElementById("modal-root")
+    document.getElementById("modal-root"),
   );
 };
 

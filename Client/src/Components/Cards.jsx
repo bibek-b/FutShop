@@ -134,10 +134,14 @@ const Cards = ({ id, rating, title, price }) => {
     <>
       {showModal && (
         <CustomConfirmModal
+        ConfirmIcon={FaBolt }
+        confirmColor="blue"
+        confirmBtnTxt="Yes, Buy Now"
           onClose={() => setShowModal(false)}
           directBuy={{ title, price, quantity }}
+          detail={ "Are You Sure? You Want to Buy Now!"}
         >
-          Are You Sure? You Want to Buy Now!
+         
         </CustomConfirmModal>
       )}
 
