@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
-import CustomPopupModal from "./Custom_Popup_Modal";
+import CustomConfirmModal from "./CustomConfirmModal";
 import { CartContext } from "../Context/CartContext";
 import { FaHeart, FaRegHeart, FaCheck } from "react-icons/fa";
 import { FaXmark, FaCartShopping, FaBolt, FaStar } from "react-icons/fa6";
@@ -122,9 +122,9 @@ const Cards = ({ id, rating, title, price }) => {
   return (
     <>
       {showModal && (
-        <CustomPopupModal onClose={() => setShowModal(false)} directBuy={{ title, price, quantity }}>
+        <CustomConfirmModal onClose={() => setShowModal(false)} directBuy={{ title, price, quantity }}>
           Are You Sure? You Want to Buy Now!
-        </CustomPopupModal>
+        </CustomConfirmModal>
       )}
 
       <div className="group relative flex flex-col rounded-2xl overflow-hidden bg-[#12121a] border border-white/8 hover:border-blue-500/50 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/10 w-[280px]">
