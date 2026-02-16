@@ -1,9 +1,10 @@
 import { motion } from 'framer-motion';
-import boots from '../assets/boots.webp';
-import balls from '../assets/balls.webp';
-import gloves from '../assets/gloves.webp';
+import boots from '../assets/boots.jpg';
+import balls from '../assets/balls.jpg';
+import gloves from '../assets/gloves.jpg';
 import jerseys from '../assets/jerseys.jpg';
 import { Link } from 'react-router-dom';
+import { LiaAngleRightSolid } from "react-icons/lia";
 
 const container = {
   hidden: {},
@@ -29,6 +30,7 @@ const FeaturedPicks = () => {
       whileInView="visible"
       viewport={{ once: true, amount: 0.15 }}
       variants={container}
+      className="space-y-4"
     >
       {/* Heading */}
       <motion.div className="flex flex-col items-center gap-2" variants={fadeUp}>
@@ -52,13 +54,13 @@ const FeaturedPicks = () => {
 
             {/* Image */}
             <div className="overflow-hidden h-52 bg-white/5">
-              <img
+              {/* <img
                 loading="lazy"
                 decoding="async"
                 src={item.img}
                 alt={item.label}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-              />
+              /> */}
             </div>
 
             {/* Footer */}
@@ -69,9 +71,7 @@ const FeaturedPicks = () => {
                 className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 hover:bg-blue-500 text-white transition-colors duration-200 shrink-0"
                 aria-label={`Browse ${item.label}`}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
+                <LiaAngleRightSolid />
               </Link>
             </div>
           </motion.div>

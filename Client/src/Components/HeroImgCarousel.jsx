@@ -8,15 +8,12 @@ import { useEffect } from "react";
 
 const images = [hero, heroBall, hero1, hero2, heroGloves];
 const HeroImgCarousel = () => {
-
   const [current, setCurrent] = useState(0);
   const length = images.length;
 
   const nextSlide = () => {
     setCurrent((current + 1) % length);
   };
-
-
 
   useEffect(() => {
     const interval = setTimeout(nextSlide, 4000);
@@ -43,7 +40,7 @@ const HeroImgCarousel = () => {
             className={`w-2.5 h-2.5 rounded-full cursor-pointer hover:scale-[1.2] transition-discrete duration-300  ${
               idx === current ? "bg-white" : "bg-gray-400"
             }`}
-         />
+          />
         ))}
       </div>
     </div>
