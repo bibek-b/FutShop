@@ -6,7 +6,6 @@ import paymentRoutes from './routes/paymentRoutes.js';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
-import Stripe from 'stripe';
 
 
 const app = express();

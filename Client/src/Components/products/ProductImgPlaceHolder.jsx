@@ -42,7 +42,7 @@ export const ProductImgPlaceholder = ({ category,parent }) => {
 
   return (
     <div
-      className={`relative w-full h-full bg-gradient-to-br ${config.gradient} flex flex-col items-center justify-center overflow-hidden`}
+      className={`relative ${parent === "checkout" ? "w-16 h-16 rounded-lg":"w-full h-full"} bg-gradient-to-br ${config.gradient} flex flex-col items-center justify-center overflow-hidden`}
     >
       {/* Animated shimmer blob */}
       <div
@@ -67,7 +67,7 @@ export const ProductImgPlaceholder = ({ category,parent }) => {
       </div>
 
       {/* Category label pill at bottom */}
-     {parent !== "featuredPicks" &&  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10">
+     {parent !== "featuredPicks" || "checkout"  &&  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10">
         <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/40 border border-white/10 backdrop-blur-sm">
           <span className={`w-1.5 h-1.5 rounded-full ${config.dot}`} />
           <span className="text-[11px] font-semibold text-white/60 uppercase tracking-widest whitespace-nowrap">

@@ -8,46 +8,27 @@ import apiCall from "../Custom-Hooks/apiCall";
 import { LoaderContext } from "../Context/LoaderContext";
 import { FaLock, FaTruck, FaTag } from "react-icons/fa";
 import { FaBoxOpen } from "react-icons/fa6";
-import { categoryConfig, fallbackConfig } from "../Components/products/ProductImgPlaceHolder";
+import {
+  categoryConfig,
+  fallbackConfig,
+  ProductImgPlaceholder,
+} from "../Components/products/ProductImgPlaceHolder";
 import ShippingInfo from "../Components/common/ShippingInfo";
+import { FIELDS } from "../constants/checkout";
 
-const FIELDS = [
-  {
-    key: "fullName",
-    label: "Full Name",
-    type: "text",
-    placeholder: "John Doe",
-  },
-  {
-    key: "email",
-    label: "Email Address",
-    type: "email",
-    placeholder: "john@example.com",
-  },
-  { key: "province", label: "Province", type: "text", placeholder: "Bagmati" },
-  { key: "city", label: "City", type: "text", placeholder: "Kathmandu" },
-  {
-    key: "address",
-    label: "Street Address",
-    type: "text",
-    placeholder: "123 Main St",
-  },
-];
-
-
-const ItemThumb = ({ category }) => {
-  const key = category?.toLowerCase().trim();
-  const config =
-    Object.entries(categoryConfig).find(([k]) => key?.includes(k))?.[1] ??
-    fallbackConfig;
-  return (
-    <div
-      className={`w-16 h-16 rounded-xl bg-gradient-to-br ${config.gradient} flex items-center justify-center shrink-0 border border-white/10`}
-    >
-      {config.icon}
-    </div>
-  );
-};
+// const ItemThumb = ({ category }) => {
+//   const key = category?.toLowerCase().trim();
+//   const config =
+//     Object.entries(categoryConfig).find(([k]) => key?.includes(k))?.[1] ??
+//     fallbackConfig;
+//   return (
+//     <div
+//       className={`w-16 h-16 rounded-xl bg-gradient-to-br ${config.gradient} flex items-center justify-center shrink-0 border border-white/10`}
+//     >
+//       {config.icon}
+//     </div>
+//   );
+// };
 
 const inputClass =
   "w-full h-10 bg-white/5 border border-white/10 rounded-xl px-3 text-white text-sm placeholder-white/25 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200";
@@ -78,15 +59,14 @@ const CheckOut = () => {
   const { showLoading, hideLoading } = useContext(LoaderContext);
   const nav = useNavigate();
 
-
-
   useEffect(() => {
     if (!user) {
       nav("/");
       return;
     }
     window.scrollTo({ top: 0 });
-    if (cart || directBuy) setSubTotal(cart?.price || directBuy?.price * quantity);
+    if (cart || directBuy)
+      setSubTotal(cart?.price || directBuy?.price * quantity);
   }, []);
 
   useEffect(() => {
@@ -154,12 +134,14 @@ const CheckOut = () => {
           title: item.title,
           price: item.price,
           qty: quantity?.[i] || 1,
+          category: item.category
         }))
       : [
           {
             title: cart?.title || directBuy?.title,
             price: cart?.price || directBuy?.price,
             qty: quantity || 1,
+            category: cart?.category || directBuy?.category
           },
         ];
 
@@ -308,7 +290,7 @@ const CheckOut = () => {
                   key={i}
                   className="flex items-center gap-3 p-3 rounded-xl bg-white/3 border border-white/6"
                 >
-                  <ItemThumb category={item.category} />
+                  <ProductImgPlaceholder parent="checkout" category={item?.category?.toLowerCase()?.trim()} />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-white/85 line-clamp-1">
                       {item.title || "N/A"}

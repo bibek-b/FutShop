@@ -94,7 +94,7 @@ const Cart = () => {
     nav("/cartDetails/checkout", {
       state: {
         quantity,
-        directBuy: { title: singleItem.title, price: singleItem.price },
+        directBuy: { title: singleItem.title, price: singleItem.price, category: singleItem.category },
       },
     });
     hideConfirmModal();
