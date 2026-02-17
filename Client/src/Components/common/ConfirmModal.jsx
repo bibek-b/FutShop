@@ -1,19 +1,9 @@
-// const { user } = useContext(UserContext);
-// const nav = useNavigate();
-
-// const handleBuyNow = () => {
-//   if (!user) {
-//     toast.error("Please login to buy this item");
-//     hideConfirmModal();
-//     return;
-//   }
-//   nav("/cartDetails/checkout", { state: { cart, quantity, directBuy } });
-// };
-import { createPortal } from "react-dom";
 import { useContext } from "react";
 import { FaXmark } from "react-icons/fa6";
 import { ConfirmModalContext } from "../../Context/ConfirmModalContext";
 import { useLockBodyScroll } from "../../hooks/useLockBodyScroll";
+import { useRef } from "react";
+import { useClickOutside } from "../../hooks/useClickOutside";
 
 const ConfirmModal = ({
   confirmColor,
@@ -21,18 +11,23 @@ const ConfirmModal = ({
   confirmBtnTxt,
   detail,
   onConfirm,
-  title
+  title,
 }) => {
-const {isModalOpen, hideConfirmModal}  = useContext(ConfirmModalContext);
+  const { isModalOpen, hideConfirmModal } = useContext(ConfirmModalContext);
+  const ref = useRef();
 
-useLockBodyScroll(isModalOpen);
+  useClickOutside(ref, hideConfirmModal);
 
-  return createPortal(
+  useLockBodyScroll(isModalOpen);
+
+  return (
     <div
       className={`fixed inset-0 flex items-center justify-center transition-discrete duration-300 bg-black/20 backdrop-blur-sm px-4 ${isModalOpen ? "opacity-100 z-50" : "opacity-0 -z-10"}`}
-
     >
-      <div className="relative bg-[#12121a] border border-white/10 rounded-2xl shadow-2xl shadow-black/60 w-full max-w-sm p-6">
+      <div
+        ref={ref}
+        className="relative bg-[#12121a] border border-white/10 rounded-2xl shadow-2xl shadow-black/60 w-full max-w-sm p-6"
+      >
         {/* Close button */}
         <button
           onClick={hideConfirmModal}
@@ -73,8 +68,7 @@ useLockBodyScroll(isModalOpen);
           </button>
         </div>
       </div>
-    </div>,
-    document.getElementById("modal-root"),
+    </div>
   );
 };
 
