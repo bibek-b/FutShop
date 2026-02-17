@@ -8,8 +8,8 @@ import apiCall from "../Custom-Hooks/apiCall";
 import { LoaderContext } from "../Context/LoaderContext";
 import { FaLock, FaTruck, FaTag } from "react-icons/fa";
 import { FaBoxOpen } from "react-icons/fa6";
-import { GiSoccerBall, GiGloves, GiShirt } from "react-icons/gi";
-import { PiSneakerFill } from "react-icons/pi";
+import { categoryConfig, fallbackConfig } from "../Components/products/ProductImgPlaceHolder";
+import ShippingInfo from "../Components/common/ShippingInfo";
 
 const FIELDS = [
   {
@@ -34,35 +34,12 @@ const FIELDS = [
   },
 ];
 
-// Reuse same placeholder icons as Cards
-const categoryConfig = {
-  "football balls": {
-    gradient: "from-blue-900 to-indigo-900",
-    icon: <GiSoccerBall className="w-7 h-7 text-blue-300/70" />,
-  },
-  "football boots": {
-    gradient: "from-orange-900 to-rose-900",
-    icon: <PiSneakerFill className="w-7 h-7 text-orange-300/70" />,
-  },
-  "football jerseys": {
-    gradient: "from-green-900 to-teal-900",
-    icon: <GiShirt className="w-7 h-7 text-green-300/70" />,
-  },
-  "gk gloves": {
-    gradient: "from-purple-900 to-fuchsia-900",
-    icon: <GiGloves className="w-7 h-7 text-purple-300/70" />,
-  },
-};
-const fallback = {
-  gradient: "from-gray-900 to-slate-800",
-  icon: <GiSoccerBall className="w-7 h-7 text-white/20" />,
-};
 
-const ItemThumb = ({ title }) => {
-  const key = title?.toLowerCase().trim();
+const ItemThumb = ({ category }) => {
+  const key = category?.toLowerCase().trim();
   const config =
     Object.entries(categoryConfig).find(([k]) => key?.includes(k))?.[1] ??
-    fallback;
+    fallbackConfig;
   return (
     <div
       className={`w-16 h-16 rounded-xl bg-gradient-to-br ${config.gradient} flex items-center justify-center shrink-0 border border-white/10`}
@@ -331,7 +308,7 @@ const CheckOut = () => {
                   key={i}
                   className="flex items-center gap-3 p-3 rounded-xl bg-white/3 border border-white/6"
                 >
-                  <ItemThumb title={item.title} />
+                  <ItemThumb category={item.category} />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-white/85 line-clamp-1">
                       {item.title || "N/A"}
@@ -356,10 +333,7 @@ const CheckOut = () => {
                 <span>Subtotal</span>
                 <span>Rs. {subTotal.toLocaleString()}</span>
               </div>
-              {/* <div className="flex justify-between text-sm text-white/50">
-                <span>Delivery Charge</span>
-                <span>Rs. {DELIVERY}</span>
-              </div> */}
+              <ShippingInfo />
               <div className="h-px bg-white/6" />
               <div className="flex justify-between items-center">
                 <span className="font-bold text-white">Total</span>
