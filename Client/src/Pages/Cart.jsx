@@ -19,7 +19,7 @@ const Cart = () => {
   const { user } = useContext(UserContext);
 
   const [quantities, setQuantities] = useState([]);
-  const [subTotal, setSubTotal] = useState(0);
+  const [total, setTotal] = useState(0);
   const [singleItem, setSingleItem] = useState(null);
   const { showConfirmModal, hideConfirmModal } =
     useContext(ConfirmModalContext);
@@ -30,16 +30,14 @@ const Cart = () => {
 
   const userCarts = carts?.filter((c) => c.userId === user?._id) ?? [];
   useEffect(() => {
-    if (!userCarts) return null;
-
     if (userCarts.length > 0) {
       setQuantities(Array(userCarts.length).fill(1));
-      setSubTotal(userCarts.reduce((acc, c) => acc + c.price, 0));
+      setTotal(userCarts.reduce((acc, c) => acc + c.price, 0));
     }
-  }, [userCarts]);
+  }, [user]);
 
-  const updateSubtotal = (qtys) => {
-    setSubTotal(
+  const updateTotal = (qtys) => {
+    setTotal(
       userCarts.reduce((acc, item, i) => acc + item.price * (qtys[i] || 1), 0),
     );
   };
@@ -48,7 +46,7 @@ const Cart = () => {
     setQuantities((prev) => {
       const next = [...prev];
       next[idx] += 1;
-      updateSubtotal(next);
+      updateTotal(next);
       return next;
     });
   };
@@ -57,7 +55,7 @@ const Cart = () => {
     setQuantities((prev) => {
       const next = [...prev];
       if (next[idx] > 1) next[idx] -= 1;
-      updateSubtotal(next);
+      updateTotal(next);
       return next;
     });
   };
@@ -301,10 +299,10 @@ const Cart = () => {
             <div className="flex flex-col gap-3">
               <div className="flex justify-between text-sm text-white/50">
                 <span>
-                  Subtotal ({userCarts.length} item
+                  Total ({userCarts.length} item
                   {userCarts.length !== 1 ? "s" : ""})
                 </span>
-                <span>RS. {subTotal.toLocaleString()}</span>
+                <span>RS. {total.toLocaleString()}</span>
               </div>
               <ShippingInfo />
             </div>
@@ -314,7 +312,7 @@ const Cart = () => {
             <div className="flex justify-between items-center">
               <span className="text-sm font-bold text-white/80">Total</span>
               <span className="text-2xl font-black text-white">
-                RS. {subTotal.toLocaleString()}
+                RS. {total.toLocaleString()}
               </span>
             </div>
 
