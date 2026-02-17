@@ -101,8 +101,7 @@ const CheckOut = () => {
   const { showLoading, hideLoading } = useContext(LoaderContext);
   const nav = useNavigate();
 
-  const DELIVERY = 100;
-  const total = subTotal + DELIVERY;
+
 
   useEffect(() => {
     if (!user) {
@@ -110,7 +109,7 @@ const CheckOut = () => {
       return;
     }
     window.scrollTo({ top: 0 });
-    if (cart || directBuy) setSubTotal(cart?.price || directBuy?.price);
+    if (cart || directBuy) setSubTotal(cart?.price || directBuy?.price * quantity);
   }, []);
 
   useEffect(() => {
@@ -151,7 +150,7 @@ const CheckOut = () => {
     const stripe = await loadStripe(import.meta.env.VITE_STRIPE_SECRET);
     const body = {
       products: directBuy ? [directBuy] : productList,
-      quantity: directBuy ? 1 : quantity,
+      quantity: quantity || 1,
     };
     try {
       showLoading();
@@ -357,15 +356,15 @@ const CheckOut = () => {
                 <span>Subtotal</span>
                 <span>Rs. {subTotal.toLocaleString()}</span>
               </div>
-              <div className="flex justify-between text-sm text-white/50">
+              {/* <div className="flex justify-between text-sm text-white/50">
                 <span>Delivery Charge</span>
                 <span>Rs. {DELIVERY}</span>
-              </div>
+              </div> */}
               <div className="h-px bg-white/6" />
               <div className="flex justify-between items-center">
                 <span className="font-bold text-white">Total</span>
                 <span className="text-2xl font-black text-white">
-                  Rs. {total.toLocaleString()}
+                  Rs. {subTotal.toLocaleString()}
                 </span>
               </div>
             </div>
