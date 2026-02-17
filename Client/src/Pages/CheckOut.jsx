@@ -15,6 +15,7 @@ import {
 } from "../Components/products/ProductImgPlaceHolder";
 import ShippingInfo from "../Components/common/ShippingInfo";
 import { FIELDS } from "../constants/checkout";
+import BackBtn from "../Components/common/BackBtn";
 
 // const ItemThumb = ({ category }) => {
 //   const key = category?.toLowerCase().trim();
@@ -147,6 +148,7 @@ const CheckOut = () => {
 
   return (
     <div className="min-h-screen bg-[#07070d] text-white px-6 md:px-16 py-10">
+    <BackBtn />
       {/* Header */}
       <div className="mb-10">
         <p className="text-xs font-bold tracking-[4px] uppercase text-blue-400 mb-2">

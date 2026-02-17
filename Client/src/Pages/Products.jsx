@@ -9,6 +9,7 @@ import SkeletonCard from "../Components/products/SkeletonCard.jsx";
 import { FaBolt } from "react-icons/fa";
 import ConfirmModal from "../Components/common/ConfirmModal.jsx";
 import { ConfirmModalContext } from "../Context/ConfirmModalContext.jsx";
+import BackBtn from "../Components/common/BackBtn.jsx";
 
 const container = {
   hidden: {},
@@ -63,6 +64,8 @@ const Products = () => {
     hideConfirmModal();
   };
   return (
+   <>
+         <BackBtn />
     <div className="min-h-screen bg-[#07070d] text-white px-6 md:px-16 py-10">
       <ConfirmModal
         ConfirmIcon={FaBolt}
@@ -139,6 +142,7 @@ const Products = () => {
         </motion.div>
       )}
     </div>
+   </>
   );
 };
 
