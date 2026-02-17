@@ -4,17 +4,11 @@ import { CartContext } from "../Context/CartContext";
 import { ProductContext } from "../Context/ProductContext";
 import { UserContext } from "../Context/UserContext";
 import { FaTrash, FaMinus, FaPlus, FaBolt } from "react-icons/fa6";
-import { GiSoccerBall, GiGloves, GiShirt } from "react-icons/gi";
-import { PiSneakerFill } from "react-icons/pi";
 import { FaShoppingCart, FaStar } from "react-icons/fa";
+import { categoryConfig, fallbackConfig } from "../Components/products/ProductImgPlaceHolder";
+import ConfirmModal from '../Components/common/ConfirmModal';
 
-const categoryConfig = {
-  "football balls":   { gradient: "from-blue-900 to-indigo-900",   icon: <GiSoccerBall  className="w-8 h-8 text-blue-300/60"   /> },
-  "football boots":   { gradient: "from-orange-900 to-rose-900",   icon: <PiSneakerFill className="w-8 h-8 text-orange-300/60"  /> },
-  "football jerseys": { gradient: "from-green-900 to-teal-900",    icon: <GiShirt       className="w-8 h-8 text-green-300/60"   /> },
-  "gk gloves":        { gradient: "from-purple-900 to-fuchsia-900",icon: <GiGloves      className="w-8 h-8 text-purple-300/60"  /> },
-};
-const fallback = { gradient: "from-gray-900 to-slate-800", icon: <GiSoccerBall className="w-8 h-8 text-white/20" /> };
+
 
 const Cart = () => {
   const { carts, setIsBuyAllCart, setCarts, handleRemoveFromCart } = useContext(CartContext);
@@ -74,7 +68,6 @@ const Cart = () => {
     setCarts([]);
   };
 
-  const DELIVERY = 100;
 
   // ── Not logged in ──
   if (!user) return (
@@ -95,16 +88,12 @@ const Cart = () => {
   return (
     <div className="min-h-screen bg-[#07070d] text-white px-6 md:px-16 py-10">
 
-      {showModal && isBuyNow && (
-        <CustomPopupModal
+        {/* <ConfirmModal
           onClose={() => setShowModal(false)}
           price={price}
           cart={cart}
           quantity={quantities[productIdx] || 1}
-        >
-          Are You Sure? You Want to Buy Now!
-        </CustomPopupModal>
-      )}
+        /> */}
 
       {/* Header */}
       <div className="mb-10 flex items-start justify-between">
@@ -153,7 +142,7 @@ const Cart = () => {
           <div className="flex-1 flex flex-col gap-4">
             {userCarts.map((item, idx) => {
               const cat    = item.title?.toLowerCase().trim();
-              const config = categoryConfig[cat] ?? fallback;
+              const config = categoryConfig[cat] ?? fallbackConfig;
               const rowTotal = item.price * (quantities[idx] || 1);
 
               return (
@@ -231,8 +220,8 @@ const Cart = () => {
                 <span>RS. {subTotal.toLocaleString()}</span>
               </div>
               <div className="flex justify-between text-sm text-white/50">
-                <span>Delivery</span>
-                <span>RS. {DELIVERY.toLocaleString()}</span>
+                {/* <span>Delivery</span>
+                <span>RS. {DELIVERY.toLocaleString()}</span> */}
               </div>
             </div>
 
@@ -240,7 +229,7 @@ const Cart = () => {
 
             <div className="flex justify-between items-center">
               <span className="text-sm font-bold text-white/80">Total</span>
-              <span className="text-2xl font-black text-white">RS. {(subTotal + DELIVERY).toLocaleString()}</span>
+              <span className="text-2xl font-black text-white">RS. {(subTotal).toLocaleString()}</span>
             </div>
 
             <button

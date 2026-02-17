@@ -28,8 +28,6 @@ export const CartContextProvider = ({ children }) => {
     
     //get the carts from localstorage
     const existingCart = JSON.parse(localStorage.getItem("cartProducts")) || [];
-    console.log(existingCart)
-    console.log(user)
     //check user has product in cart
     const userCart = existingCart.filter(item => item.userId === user._id);
 

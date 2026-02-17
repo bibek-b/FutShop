@@ -20,7 +20,8 @@ const Wishlist = () => {
     if (!user) {
       toast.error("Please login to add to cart!");
       return;
-    }
+    } 
+    //toast mssg handled by this context
     handleAddToCart({
       id: item.id,
       userId: user._id,
@@ -28,7 +29,6 @@ const Wishlist = () => {
       price: item.price,
       rating: item.rating,
     });
-    toast.success("Added to cart!");
   };
   return (
     <div className="min-h-screen bg-[#07070d] text-white px-6 md:px-16 py-10">
