@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState, useContext, Suspense } from "react";
 import apiCall from "../Custom-Hooks/apiCall.js";
 import Cards from "../Components/Cards.jsx";
@@ -6,6 +6,9 @@ import { toast } from "react-toastify";
 import { LoaderContext } from "../Context/LoaderContext.jsx";
 import { motion } from "framer-motion";
 import SkeletonCard from "../Components/products/SkeletonCard.jsx";
+import { FaBolt } from "react-icons/fa";
+import ConfirmModal from "../Components/common/ConfirmModal.jsx";
+import { ConfirmModalContext } from "../Context/ConfirmModalContext.jsx";
 
 const container = {
   hidden: {},
@@ -23,6 +26,9 @@ const Products = () => {
   const { productCategory } = useParams();
   const [products, setProducts]   = useState([]);
   const { showLoading, hideLoading, isLoading } = useContext(LoaderContext);
+  const [buyNowItem, setBuyNowItem] = useState(null);
+  const nav = useNavigate();
+  const { showConfirmModal, hideConfirmModal } = useContext(ConfirmModalContext);
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
@@ -40,8 +46,28 @@ const Products = () => {
     fetchProducts();
   }, [productCategory]);
 
+    const buyNowConfirmed = () => {
+    if (!user) {
+      toast.error("Please login to buy this item");
+      onClose();
+      return;
+    }
+    nav("/cartDetails/checkout", {
+      state: { quantity: 1, directBuy: { title: buyNowItem.title, price: buyNowItem.price } },
+    });
+    hideConfirmModal();
+  };
+
   return (
     <div className="min-h-screen bg-[#07070d] text-white px-6 md:px-16 py-10">
+     <ConfirmModal
+        ConfirmIcon={FaBolt}
+        confirmColor="blue"
+        confirmBtnTxt="Yes, Buy Now"
+        onConfirm={buyNowConfirmed}
+        title="Confirm Purchase"
+        detail={"Are You Sure? You Want to Buy Now!"}
+      />
 
       {/* Page header */}
       <div className="mb-8">
@@ -90,6 +116,10 @@ const Products = () => {
                   rating={p?.rating}
                   price={p?.price}
                   productCategory={productCategory}
+                  onBuyNow={(item) => {
+                    setBuyNowItem(item);
+                    showConfirmModal();
+                  }}
                 />
               </Suspense>
             </motion.div>

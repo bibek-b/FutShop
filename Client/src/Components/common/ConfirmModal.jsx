@@ -16,6 +16,7 @@ const ConfirmModal = ({
   const { isModalOpen, hideConfirmModal } = useContext(ConfirmModalContext);
   const ref = useRef();
 
+
   useClickOutside(ref, hideConfirmModal);
 
   useLockBodyScroll(isModalOpen);
