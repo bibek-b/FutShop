@@ -146,10 +146,9 @@ const CheckOut = () => {
   const handleChange = (field, value) =>
     setFormData((prev) => ({ ...prev, [field]: value }));
 
- 
   const makePayment = async () => {
     if (!formValid) return;
-    const stripe = await loadStripe(import.meta.env.STRIPE_SECRET);
+    const stripe = await loadStripe(import.meta.env.VITE_STRIPE_SECRET);
     const body = {
       products: directBuy ? [directBuy] : productList,
       quantity: directBuy ? 1 : quantity,
