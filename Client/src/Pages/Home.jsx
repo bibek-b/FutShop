@@ -2,18 +2,12 @@ import FeaturedPicks from "../Components/FeaturedPicks";
 import { motion } from "framer-motion";
 import HeroImgCarousel from "../Components/HeroImgCarousel";
 import { useEffect, useContext, useRef } from "react";
-import { ProductContext } from "../Context/ProductContext";
 
 const TICKER =
   "🚚 Free Delivery  ·  🔒 Secure Payments  ·  🛡️ Authentic Products  ·  📦 Easy Returns  ·  ";
 
 const Home = () => {
-  const { showModal, setShowModal } = useContext(ProductContext);
   const featuredRef = useRef(null);
-
-  useEffect(() => {
-    if (showModal) setShowModal(true);
-  }, [showModal]);
 
   const scrollToFeatured = () => {
     featuredRef.current?.scrollIntoView({ behavior: "smooth" });
