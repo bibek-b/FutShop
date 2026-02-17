@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { CartContext } from "../Context/CartContext";
 import { FaHeart, FaRegHeart, FaCheck } from "react-icons/fa";
 import { FaXmark, FaCartShopping, FaBolt, FaStar } from "react-icons/fa6";
@@ -96,10 +96,10 @@ const Cards = ({ id, rating, title, price }) => {
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const { handleAddToCart, handleRemoveFromCart, carts } =
     useContext(CartContext);
-  const { setIsBuyNow } = useContext(ProductContext);
   const { user } = useContext(UserContext);
   const { productCategory } = useParams();
   const { showConfirmModal } = useContext(ConfirmModalContext);
+  const nav  = useNavigate();
 
   const formattedCategory = productCategory?.toLowerCase().trim();
   const inCart =
