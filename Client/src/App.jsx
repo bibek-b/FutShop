@@ -9,7 +9,6 @@ import CheckOut from "./Pages/CheckOut";
 import PaymentSuccess from "./Pages/PaymentSuccess";
 import PaymentCancel from "./Pages/PaymentCancel";
 import AddProduct from "./Pages/AddProduct";
-import MyOrders from "./Pages/MyOrders";
 import Wishlist from "./Pages/WishList";
 
 
@@ -25,7 +24,6 @@ const App = () => {
           <Route path="/payment/success" element={<PaymentSuccess />} />
           <Route path="/payment/cancel" element={<PaymentCancel />} />
           <Route path="/addProduct" element={<AddProduct />} />
-          <Route path="/MyOrders" element={<MyOrders />} />
           <Route path="/mywishlist" element={<Wishlist />} />
         </Route>
           <Route path="/register" element={<Register />} />
