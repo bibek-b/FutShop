@@ -29,13 +29,14 @@ const Cart = () => {
   const nav = useNavigate();
 
   const userCarts = carts?.filter((c) => c.userId === user?._id) ?? [];
-
   useEffect(() => {
+    if (!userCarts) return null;
+
     if (userCarts.length > 0) {
       setQuantities(Array(userCarts.length).fill(1));
       setSubTotal(userCarts.reduce((acc, c) => acc + c.price, 0));
     }
-  }, [carts]);
+  }, [userCarts]);
 
   const updateSubtotal = (qtys) => {
     setSubTotal(
@@ -95,7 +96,11 @@ const Cart = () => {
     nav("/cartDetails/checkout", {
       state: {
         quantity,
-        directBuy: { title: singleItem.title, price: singleItem.price, category: singleItem.category },
+        directBuy: {
+          title: singleItem.title,
+          price: singleItem.price,
+          category: singleItem.category,
+        },
       },
     });
     hideConfirmModal();
