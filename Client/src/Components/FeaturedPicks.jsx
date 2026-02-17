@@ -5,6 +5,7 @@ import gloves from '../assets/gloves.jpg';
 import jerseys from '../assets/jerseys.jpg';
 import { Link } from 'react-router-dom';
 import { LiaAngleRightSolid } from "react-icons/lia";
+import { ProductImgPlaceholder } from './products/ProductImgPlaceHolder';
 
 const container = {
   hidden: {},
@@ -54,6 +55,7 @@ const FeaturedPicks = () => {
 
             {/* Image */}
             <div className="overflow-hidden h-52 bg-white/5">
+                   <ProductImgPlaceholder category={item.label.toLowerCase().trim()} parent={"featuredPicks"} />
               {/* <img
                 loading="lazy"
                 decoding="async"

@@ -3,91 +3,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import { CartContext } from "../Context/CartContext";
 import { FaHeart, FaRegHeart, FaCheck } from "react-icons/fa";
 import { FaXmark, FaCartShopping, FaBolt, FaStar } from "react-icons/fa6";
-import { GiSoccerBall, GiGloves, GiShirt } from "react-icons/gi";
-import { PiSneakerFill } from "react-icons/pi";
-import { ProductContext } from "../Context/ProductContext";
+
 import { UserContext } from "../Context/UserContext";
 import { useWishlist } from "../Context/WishListContex";
 import { toast } from "react-toastify";
 import ConfirmModal from "./common/ConfirmModal";
 import { ConfirmModalContext } from "../Context/ConfirmModalContext";
+import { ProductImgPlaceholder } from "./products/ProductImgPlaceHolder";
 
-// Category → gradient + icon config
-const categoryConfig = {
-  "football balls": {
-    gradient: "from-blue-900 via-blue-800 to-indigo-900",
-    shimmer: "from-blue-500/20 to-indigo-500/20",
-    icon: <GiSoccerBall className="w-20 h-20 text-blue-300/60" />,
-    dot: "bg-blue-500",
-  },
-  "football boots": {
-    gradient: "from-orange-900 via-red-900 to-rose-900",
-    shimmer: "from-orange-500/20 to-rose-500/20",
-    icon: <PiSneakerFill className="w-20 h-20 text-orange-300/60" />,
-    dot: "bg-orange-500",
-  },
-  "football jerseys": {
-    gradient: "from-green-900 via-emerald-900 to-teal-900",
-    shimmer: "from-green-500/20 to-teal-500/20",
-    icon: <GiShirt className="w-20 h-20 text-green-300/60" />,
-    dot: "bg-green-500",
-  },
-  "gk gloves": {
-    gradient: "from-purple-900 via-violet-900 to-fuchsia-900",
-    shimmer: "from-purple-500/20 to-fuchsia-500/20",
-    icon: <GiGloves className="w-20 h-20 text-purple-300/60" />,
-    dot: "bg-purple-500",
-  },
-};
 
-const fallbackConfig = {
-  gradient: "from-gray-900 via-slate-800 to-gray-900",
-  shimmer: "from-gray-500/10 to-slate-500/10",
-  icon: <GiSoccerBall className="w-20 h-20 text-white/20" />,
-  dot: "bg-gray-500",
-};
-
-const ProductImagePlaceholder = ({ category, title }) => {
-  const config = categoryConfig[category] ?? fallbackConfig;
-
-  return (
-    <div
-      className={`relative w-full h-full bg-gradient-to-br ${config.gradient} flex flex-col items-center justify-center overflow-hidden`}
-    >
-      {/* Animated shimmer blob */}
-      <div
-        className={`absolute w-48 h-48 rounded-full bg-gradient-to-br ${config.shimmer} blur-3xl animate-pulse`}
-      />
-
-      {/* Subtle grid pattern */}
-      <div
-        className="absolute inset-0 opacity-[0.04]"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
-          backgroundSize: "24px 24px",
-        }}
-      />
-
-      {/* Icon */}
-      <div className="relative z-10 flex flex-col items-center gap-3">
-        <div className="p-5 rounded-2xl bg-black/30 border border-white/10 backdrop-blur-sm">
-          {config.icon}
-        </div>
-      </div>
-
-      {/* Category label pill at bottom */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10">
-        <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/40 border border-white/10 backdrop-blur-sm">
-          <span className={`w-1.5 h-1.5 rounded-full ${config.dot}`} />
-          <span className="text-[11px] font-semibold text-white/60 uppercase tracking-widest whitespace-nowrap">
-            {category}
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 const Cards = ({ id, rating, title, price }) => {
   const [isAddedToCart, setIsAddedToCart] = useState(false);
@@ -171,7 +95,7 @@ const buyNowConfirmed = () => {
           <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 z-10" />
 
           {/* Placeholder */}
-          <ProductImagePlaceholder category={formattedCategory} title={title} />
+          <ProductImgPlaceholder category={formattedCategory}   />
 
           {/* Fade into card */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#12121a] via-transparent to-transparent pointer-events-none" />
@@ -201,7 +125,7 @@ const buyNowConfirmed = () => {
           )}
 
           {/* Price floats over gradient */}
-          <div className="absolute -bottom-2 left-4  z-20 ">
+          <div className="absolute bottom-2 left-4  z-30 ">
             <span className="text-lg font-black text-white drop-shadow-lg">
               RS. {price}
             </span>

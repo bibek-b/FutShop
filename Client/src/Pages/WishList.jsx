@@ -8,34 +8,8 @@ import { FaStar } from "react-icons/fa";
 import { GiSoccerBall, GiGloves, GiShirt } from "react-icons/gi";
 import { PiSneakerFill } from "react-icons/pi";
 import { toast } from "react-toastify";
+import { categoryConfig, fallbackConfig } from "../Components/products/ProductImgPlaceHolder";
 
-const categoryConfig = {
-  "football balls": {
-    gradient: "from-blue-900 via-blue-800 to-indigo-900",
-    icon: <GiSoccerBall className="w-10 h-10 text-blue-300/60" />,
-    dot: "bg-blue-500",
-  },
-  "football boots": {
-    gradient: "from-orange-900 via-red-900 to-rose-900",
-    icon: <PiSneakerFill className="w-10 h-10 text-orange-300/60" />,
-    dot: "bg-orange-500",
-  },
-  "football jerseys": {
-    gradient: "from-green-900 via-emerald-900 to-teal-900",
-    icon: <GiShirt className="w-10 h-10 text-green-300/60" />,
-    dot: "bg-green-500",
-  },
-  "gk gloves": {
-    gradient: "from-purple-900 via-violet-900 to-fuchsia-900",
-    icon: <GiGloves className="w-10 h-10 text-purple-300/60" />,
-    dot: "bg-purple-500",
-  },
-};
-const fallback = {
-  gradient: "from-gray-900 to-slate-800",
-  icon: <GiSoccerBall className="w-10 h-10 text-white/20" />,
-  dot: "bg-gray-500",
-};
 
 const Wishlist = () => {
   const { wishlist, removeFromWishlist } = useWishlist();
@@ -101,7 +75,7 @@ const Wishlist = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {wishlist.map((item) => {
             const cat = item.category?.toLowerCase().trim();
-            const config = categoryConfig[cat] ?? fallback;
+            const config = categoryConfig[cat] ?? fallbackConfig;
             const inCart = carts?.some((c) => c.id === item.id);
 
             return (
