@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { CartContext } from "../Context/CartContext";
-import { ProductContext } from "../Context/ProductContext";
 import { UserContext } from "../Context/UserContext";
 import { FaTrash, FaMinus, FaPlus, FaBolt } from "react-icons/fa6";
 import { FaShoppingCart, FaStar } from "react-icons/fa";
@@ -17,8 +16,7 @@ const Cart = () => {
   const { carts, setIsBuyAllCart, setCarts, handleRemoveFromCart } =
     useContext(CartContext);
   const { user } = useContext(UserContext);
-  const { setShowModal, showModal, setIsBuyNow, isBuyNow } =
-    useContext(ProductContext);
+
 
   const [quantities, setQuantities] = useState([]);
   const [subTotal, setSubTotal] = useState(0);
@@ -31,10 +29,6 @@ const Cart = () => {
   const nav = useNavigate();
 
   const userCarts = carts?.filter((c) => c.userId === user?._id) ?? [];
-
-  useEffect(() => {
-    setIsBuyNow(false);
-  }, []);
 
   useEffect(() => {
     if (userCarts.length > 0) {
@@ -132,7 +126,6 @@ const Cart = () => {
         ConfirmIcon={FaBolt}
         confirmColor="blue"
         confirmBtnTxt="Yes, Buy"
-        onClose={() => setShowModal(false)}
         onConfirm={buyNowConfirmed}
         // directBuy={{ title, price, quantity }}
       />
