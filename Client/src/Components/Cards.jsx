@@ -87,6 +87,7 @@ const buyNowConfirmed = () => {
         onClose={() => setShowModal(false)}
         onConfirm={buyNowConfirmed}
         directBuy={{ title, price, quantity }}
+        title="Confirm Purchase"
         detail={"Are You Sure? You Want to Buy Now!"}
       />
         {/* ── IMAGE AREA ── */}

@@ -20,7 +20,8 @@ const ConfirmModal = ({
   ConfirmIcon,
   confirmBtnTxt,
   detail,
-  onConfirm
+  onConfirm,
+  title
 }) => {
 const {isModalOpen, hideConfirmModal}  = useContext(ConfirmModalContext);
 
@@ -49,7 +50,7 @@ useLockBodyScroll(isModalOpen);
         </div>
 
         {/* Message */}
-        <h3 className="text-lg font-bold text-white mb-1">Confirm Purchase</h3>
+        <h3 className="text-lg font-bold text-white mb-1">{title}</h3>
         <p className="text-sm text-white/50 leading-relaxed mb-6">{detail}</p>
 
         {/* Divider */}
