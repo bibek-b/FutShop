@@ -11,24 +11,20 @@
 // };
 import { createPortal } from "react-dom";
 import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { FaXmark } from "react-icons/fa6";
 import { ConfirmModalContext } from "../../Context/ConfirmModalContext";
+import { useLockBodyScroll } from "../../hooks/useLockBodyScroll";
 
 const ConfirmModal = ({
   confirmColor,
   ConfirmIcon,
   confirmBtnTxt,
   detail,
-  cart,
-  quantity,
-  directBuy,
   onConfirm
 }) => {
 const {isModalOpen, hideConfirmModal}  = useContext(ConfirmModalContext);
 
-console.log(isModalOpen)
+useLockBodyScroll(isModalOpen);
 
   return createPortal(
     <div
