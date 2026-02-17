@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 import { ConfirmModalContext } from "../Context/ConfirmModalContext";
 
 const Cart = () => {
-  const { carts, setIsBuyAllCart, setCarts, handleRemoveFromCart } =
+  const { carts, setIsBuyAllCart, setCarts, removeFromCart } =
     useContext(CartContext);
   const { user } = useContext(UserContext);
 
@@ -23,7 +23,8 @@ const Cart = () => {
   const { showConfirmModal, hideConfirmModal } =
     useContext(ConfirmModalContext);
   const [quantity, setQuantity] = useState(0);
-
+  const [idToDelete, setIdToDelete] = useState(null);
+  const [isEmptyCart, setIsEmptyCart] = useState(false);
   const nav = useNavigate();
 
   const userCarts = carts?.filter((c) => c.userId === user?._id) ?? [];
@@ -64,12 +65,21 @@ const Cart = () => {
     nav("/cartDetails/checkout", { state: { quantity: quantities } });
   };
 
-  const handleEmptyCart = () => {
+  const handleEmptyCartConfirm = () => {
+    showConfirmModal();
+    setIsEmptyCart(true);
+  };
+
+  const emptyCart = () => {
     localStorage.removeItem("cartProducts");
     setCarts([]);
+    toast.success("Cart emptied successfully!");
+    hideConfirmModal();
   };
 
   const handleBuyNowConfirm = (data, qty) => {
+    setIsEmptyCart(false);
+    setIdToDelete(null);
     setQuantity(qty);
     setSingleItem(data);
     showConfirmModal();
@@ -88,6 +98,12 @@ const Cart = () => {
       },
     });
     hideConfirmModal();
+  };
+
+  const removeFromCartConfirm = (id) => {
+    setIsEmptyCart(false);
+    setIdToDelete(id);
+    showConfirmModal();
   };
 
   // ── Not logged in ──
@@ -117,13 +133,24 @@ const Cart = () => {
   return (
     <div className="min-h-screen bg-[#07070d] text-white px-6 md:px-16 py-10">
       <ConfirmModal
-        title="Confirm Purchase"
-        detail="Are you sure? You want to buy only this item."
-        ConfirmIcon={FaBolt}
-        confirmColor="blue"
-        confirmBtnTxt="Yes, Buy"
-        onConfirm={buyNowConfirmed}
-        // directBuy={{ title, price, quantity }}
+        title={
+          idToDelete
+            ? "Confirm Delete"
+            : isEmptyCart
+              ? "Confirm Empty Cart"
+              : "Confirm Purchase"
+        }
+        detail={`Are you sure? ${idToDelete ? "You want to delete this item" : isEmptyCart ? "You want to empty the cart" : "You want to buy only this item"}.`}
+        ConfirmIcon={idToDelete || isEmptyCart ? FaTrash : FaBolt}
+        confirmColor={idToDelete || isEmptyCart ? "red" : "blue"}
+        confirmBtnTxt={`Yes, ${idToDelete ? "Delete" : isEmptyCart ? "Empty" : "Buy"}`}
+        onConfirm={
+          idToDelete
+            ? () => removeFromCart(idToDelete)
+            : isEmptyCart
+              ? emptyCart
+              : buyNowConfirmed
+        }
       />
 
       {/* Header */}
@@ -147,7 +174,7 @@ const Cart = () => {
 
         {userCarts.length > 0 && (
           <button
-            onClick={handleEmptyCart}
+            onClick={handleEmptyCartConfirm}
             className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-red-500/10 border border-red-500/25 hover:bg-red-500/20 text-red-400 text-xs font-bold transition-all duration-200 cursor-pointer mt-2"
           >
             <FaTrash className="w-3 h-3" />
@@ -241,13 +268,6 @@ const Cart = () => {
                   {/* Actions */}
                   <div className="flex flex-col gap-2 shrink-0">
                     <button
-                      // onClick={() => {
-                      //   setShowModal(true);
-                      //   setPrice(item.price);
-                      //   setIsBuyNow(true);
-                      //   setCart(item);
-                      //   setIsBuyAllCart(false);
-                      // }}
                       onClick={() => handleBuyNowConfirm(item, quantities[idx])}
                       className="flex items-center justify-center gap-1 w-9 h-9 rounded-xl bg-blue-600 hover:bg-blue-500 text-white transition-colors duration-200 cursor-pointer"
                       title="Buy Now"
@@ -255,7 +275,7 @@ const Cart = () => {
                       <FaBolt className="w-3.5 h-3.5" />
                     </button>
                     <button
-                      onClick={() => handleRemoveFromCart(item.id)}
+                      onClick={() => removeFromCartConfirm(item.id)}
                       className="flex items-center justify-center w-9 h-9 rounded-xl bg-red-500/10 border border-red-500/25 hover:bg-red-500/20 text-red-400 transition-colors duration-200 cursor-pointer"
                       title="Remove"
                     >

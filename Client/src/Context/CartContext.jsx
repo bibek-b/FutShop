@@ -4,6 +4,7 @@ import { useState } from "react";
 import { createContext } from "react";
 import { UserContext } from "./UserContext";
 import { toast } from "react-toastify";
+import { ConfirmModalContext } from "./ConfirmModalContext";
 
 export const CartContext = createContext();
 
@@ -11,6 +12,7 @@ export const CartContextProvider = ({ children }) => {
   const [carts, setCarts] = useState([]);
   const [isBuyAllCart, setIsBuyAllCart] = useState(false);
   const { user } = useContext(UserContext);
+  const { hideConfirmModal } = useContext(ConfirmModalContext);
 
   useEffect(() => {
     setCarts(JSON.parse(localStorage.getItem("cartProducts")));
@@ -46,7 +48,7 @@ export const CartContextProvider = ({ children }) => {
       return;
     }
   };
-  const handleRemoveFromCart = (productId) => {
+  const removeFromCart = (productId) => {
     const existingCart = JSON.parse(localStorage.getItem("cartProducts")) || [];
 
     const isInCart = existingCart.some(p => p.id === productId);
@@ -60,10 +62,12 @@ export const CartContextProvider = ({ children }) => {
       toast.error("The product is not in cart!")
     }
 
+    hideConfirmModal()
+
   };
 
   return (
-    <CartContext.Provider value={{ handleAddToCart, handleRemoveFromCart, carts, setCarts, setIsBuyAllCart, isBuyAllCart }}>
+    <CartContext.Provider value={{ handleAddToCart, removeFromCart, carts, setCarts, setIsBuyAllCart, isBuyAllCart }}>
       {children}
     </CartContext.Provider>
   );
