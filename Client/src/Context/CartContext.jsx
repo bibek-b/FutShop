@@ -23,6 +23,7 @@ export const CartContextProvider = ({ children }) => {
       title: data.title,
       rating: data.rating,
       price: data.price,
+      category: data.category
     };
 
     
