@@ -71,7 +71,7 @@ const Navbar = () => {
   );
 
   return (
-    <div className="sticky top-0 z-50">
+    <div className="sticky top-0 ">
       {/* Gradient accent line */}
       <div className="h-0.5 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500" />
 
