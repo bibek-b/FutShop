@@ -5,27 +5,36 @@ import { ProductContext } from "../Context/ProductContext";
 import { UserContext } from "../Context/UserContext";
 import { FaTrash, FaMinus, FaPlus, FaBolt } from "react-icons/fa6";
 import { FaShoppingCart, FaStar } from "react-icons/fa";
-import { categoryConfig, fallbackConfig } from "../Components/products/ProductImgPlaceHolder";
-import ConfirmModal from '../Components/common/ConfirmModal';
-
-
+import {
+  categoryConfig,
+  fallbackConfig,
+} from "../Components/products/ProductImgPlaceHolder";
+import ConfirmModal from "../Components/common/ConfirmModal";
+import { toast } from "react-toastify";
+import { ConfirmModalContext } from "../Context/ConfirmModalContext";
 
 const Cart = () => {
-  const { carts, setIsBuyAllCart, setCarts, handleRemoveFromCart } = useContext(CartContext);
-  const { user }  = useContext(UserContext);
-  const { setShowModal, showModal, setIsBuyNow, isBuyNow } = useContext(ProductContext);
+  const { carts, setIsBuyAllCart, setCarts, handleRemoveFromCart } =
+    useContext(CartContext);
+  const { user } = useContext(UserContext);
+  const { setShowModal, showModal, setIsBuyNow, isBuyNow } =
+    useContext(ProductContext);
 
   const [quantities, setQuantities] = useState([]);
-  const [subTotal,   setSubTotal]   = useState(0);
-  const [price,      setPrice]      = useState(null);
-  const [cart,       setCart]       = useState(null);
+  const [subTotal, setSubTotal] = useState(0);
+  const [price, setPrice] = useState(null);
+  const [singleItem, setSingleItem] = useState(null);
   const [productIdx, setProductIdx] = useState(null);
+  const { showConfirmModal, hideConfirmModal } = useContext(ConfirmModalContext);
+  const [quantity, setQuantity] = useState(0);
 
   const nav = useNavigate();
 
   const userCarts = carts?.filter((c) => c.userId === user?._id) ?? [];
 
-  useEffect(() => { setIsBuyNow(false); }, []);
+  useEffect(() => {
+    setIsBuyNow(false);
+  }, []);
 
   useEffect(() => {
     if (userCarts.length > 0) {
@@ -35,7 +44,9 @@ const Cart = () => {
   }, [carts]);
 
   const updateSubtotal = (qtys) => {
-    setSubTotal(userCarts.reduce((acc, item, i) => acc + item.price * (qtys[i] || 1), 0));
+    setSubTotal(
+      userCarts.reduce((acc, item, i) => acc + item.price * (qtys[i] || 1), 0),
+    );
   };
 
   const increment = (idx) => {
@@ -68,39 +79,74 @@ const Cart = () => {
     setCarts([]);
   };
 
+  const handleBuyNowConfirm = (data, qty) => {
+    setQuantity(qty);
+    setSingleItem(data);
+    showConfirmModal();
+  };
+
+  const buyNowConfirmed = () => {
+    if (!user) {
+      toast.error("Please login to buy this item");
+      onClose();
+      return;
+    }
+    nav("/cartDetails/checkout", {
+      state: {
+        quantity,
+        directBuy: { title: singleItem.title, price: singleItem.price },
+      },
+    });
+    hideConfirmModal()
+  };
 
   // ── Not logged in ──
-  if (!user) return (
-    <div className="min-h-screen bg-[#07070d] flex items-center justify-center">
-      <div className="flex flex-col items-center gap-4 text-center">
-        <div className="w-16 h-16 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
-          <FaShoppingCart className="w-6 h-6 text-blue-500/50" />
+  if (!user)
+    return (
+      <div className="min-h-screen bg-[#07070d] flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4 text-center">
+          <div className="w-16 h-16 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
+            <FaShoppingCart className="w-6 h-6 text-blue-500/50" />
+          </div>
+          <p className="text-white/60 text-lg font-semibold">
+            You're not logged in
+          </p>
+          <p className="text-white/30 text-sm">
+            Please log in to view your cart.
+          </p>
+          <Link
+            to="/login"
+            className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold transition-colors duration-200"
+          >
+            Sign In
+          </Link>
         </div>
-        <p className="text-white/60 text-lg font-semibold">You're not logged in</p>
-        <p className="text-white/30 text-sm">Please log in to view your cart.</p>
-        <Link to="/login" className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold transition-colors duration-200">
-          Sign In
-        </Link>
       </div>
-    </div>
-  );
+    );
 
   return (
     <div className="min-h-screen bg-[#07070d] text-white px-6 md:px-16 py-10">
-
-        {/* <ConfirmModal
-          onClose={() => setShowModal(false)}
-          price={price}
-          cart={cart}
-          quantity={quantities[productIdx] || 1}
-        /> */}
+      <ConfirmModal
+        title="Confirm Purchase"
+        detail="Are you sure? You want to buy only this item."
+        ConfirmIcon={FaBolt}
+        confirmColor="blue"
+        confirmBtnTxt="Yes, Buy"
+        onClose={() => setShowModal(false)}
+        onConfirm={buyNowConfirmed}
+        // directBuy={{ title, price, quantity }}
+      />
 
       {/* Header */}
       <div className="mb-10 flex items-start justify-between">
         <div>
-          <p className="text-xs font-bold tracking-[4px] uppercase text-blue-400 mb-2">Checkout</p>
+          <p className="text-xs font-bold tracking-[4px] uppercase text-blue-400 mb-2">
+            Checkout
+          </p>
           <div className="flex items-center gap-3">
-            <h1 className="text-4xl md:text-5xl font-black tracking-tight">Shopping Cart</h1>
+            <h1 className="text-4xl md:text-5xl font-black tracking-tight">
+              Shopping Cart
+            </h1>
             {userCarts.length > 0 && (
               <span className="px-2.5 py-1 rounded-full bg-blue-500/15 border border-blue-500/30 text-blue-400 text-sm font-bold">
                 {userCarts.length}
@@ -128,20 +174,26 @@ const Cart = () => {
             <FaShoppingCart className="w-8 h-8 text-blue-500/40" />
           </div>
           <div>
-            <p className="text-white/60 text-lg font-semibold">Your cart is empty</p>
-            <p className="text-white/30 text-sm mt-1">Add some items to get started.</p>
+            <p className="text-white/60 text-lg font-semibold">
+              Your cart is empty
+            </p>
+            <p className="text-white/30 text-sm mt-1">
+              Add some items to get started.
+            </p>
           </div>
-          <Link to="/products/football balls" className="mt-2 px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold transition-colors duration-200">
+          <Link
+            to="/products/football balls"
+            className="mt-2 px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold transition-colors duration-200"
+          >
             Browse Products
           </Link>
         </div>
       ) : (
         <div className="flex flex-col lg:flex-row gap-8 items-start">
-
           {/* Cart items */}
           <div className="flex-1 flex flex-col gap-4">
             {userCarts.map((item, idx) => {
-              const cat    = item.title?.toLowerCase().trim();
+              const cat = item.category?.toLowerCase().trim();
               const config = categoryConfig[cat] ?? fallbackConfig;
               const rowTotal = item.price * (quantities[idx] || 1);
 
@@ -151,18 +203,26 @@ const Cart = () => {
                   className="flex items-center gap-4 bg-[#12121a] border border-white/8 hover:border-blue-500/30 rounded-2xl p-4 transition-colors duration-200"
                 >
                   {/* Placeholder thumbnail */}
-                  <div className={`w-20 h-20 rounded-xl bg-gradient-to-br ${config.gradient} flex items-center justify-center shrink-0 border border-white/8`}>
+                  <div
+                    className={`w-20 h-20 rounded-xl bg-gradient-to-br ${config.gradient} flex items-center justify-center shrink-0 border border-white/8`}
+                  >
                     {config.icon}
                   </div>
 
                   {/* Info */}
                   <div className="flex-1 min-w-0">
-                    <h2 className="text-sm font-semibold text-white/90 line-clamp-2 leading-snug">{item.title}</h2>
+                    <h2 className="text-sm font-semibold text-white/90 line-clamp-2 leading-snug">
+                      {item.title}
+                    </h2>
                     <div className="flex items-center gap-1 mt-1">
                       <FaStar className="w-3 h-3 text-yellow-400" />
-                      <span className="text-xs text-white/40">{item.rating?.toFixed(1)}</span>
+                      <span className="text-xs text-white/40">
+                        {item.rating?.toFixed(1)}
+                      </span>
                     </div>
-                    <p className="text-base font-black text-white mt-1">RS. {item.price.toLocaleString()}</p>
+                    <p className="text-base font-black text-white mt-1">
+                      RS. {item.price.toLocaleString()}
+                    </p>
                   </div>
 
                   {/* Quantity stepper */}
@@ -173,7 +233,9 @@ const Cart = () => {
                     >
                       <FaMinus className="w-2.5 h-2.5" />
                     </button>
-                    <span className="w-6 text-center text-sm font-bold text-white">{quantities[idx] || 1}</span>
+                    <span className="w-6 text-center text-sm font-bold text-white">
+                      {quantities[idx] || 1}
+                    </span>
                     <button
                       onClick={() => increment(idx)}
                       className="w-7 h-7 rounded-lg bg-white/6 border border-white/10 hover:bg-white/12 flex items-center justify-center text-white/70 hover:text-white transition-all cursor-pointer"
@@ -190,7 +252,14 @@ const Cart = () => {
                   {/* Actions */}
                   <div className="flex flex-col gap-2 shrink-0">
                     <button
-                      onClick={() => { setShowModal(true); setPrice(item.price); setIsBuyNow(true); setCart(item); setIsBuyAllCart(false); }}
+                      // onClick={() => {
+                      //   setShowModal(true);
+                      //   setPrice(item.price);
+                      //   setIsBuyNow(true);
+                      //   setCart(item);
+                      //   setIsBuyAllCart(false);
+                      // }}
+                      onClick={() => handleBuyNowConfirm(item, quantities[idx])}
                       className="flex items-center justify-center gap-1 w-9 h-9 rounded-xl bg-blue-600 hover:bg-blue-500 text-white transition-colors duration-200 cursor-pointer"
                       title="Buy Now"
                     >
@@ -216,7 +285,10 @@ const Cart = () => {
 
             <div className="flex flex-col gap-3">
               <div className="flex justify-between text-sm text-white/50">
-                <span>Subtotal ({userCarts.length} item{userCarts.length !== 1 ? "s" : ""})</span>
+                <span>
+                  Subtotal ({userCarts.length} item
+                  {userCarts.length !== 1 ? "s" : ""})
+                </span>
                 <span>RS. {subTotal.toLocaleString()}</span>
               </div>
               <div className="flex justify-between text-sm text-white/50">
@@ -229,7 +301,9 @@ const Cart = () => {
 
             <div className="flex justify-between items-center">
               <span className="text-sm font-bold text-white/80">Total</span>
-              <span className="text-2xl font-black text-white">RS. {(subTotal).toLocaleString()}</span>
+              <span className="text-2xl font-black text-white">
+                RS. {subTotal.toLocaleString()}
+              </span>
             </div>
 
             <button
