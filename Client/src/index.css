@@ -6,11 +6,11 @@
     box-sizing: border-box;
     font-family: "Graduate", serif;
 }
-/* ::-webkit-scrollbar{
+::-webkit-scrollbar{
     display: none;
-} */
+}
 
-/* App.css or global stylesheet */
+/*  global stylesheet */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
