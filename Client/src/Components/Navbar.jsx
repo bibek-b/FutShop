@@ -39,6 +39,7 @@ const Navbar = () => {
         </Link>
       )}
 
+
       <Link
         to="/mywishlist"
         onClick={onClick}
@@ -60,7 +61,7 @@ const Navbar = () => {
   );
 
   return (
-    <div className="sticky top-0 ">
+    <div className="sticky top-0 z-10 ">
       {/* Gradient accent line */}
       <div className="h-0.5 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500" />
 

@@ -43,7 +43,7 @@ const Home = () => {
         </div>
 
         {/* Hero content */}
-        <div className="relative z-10 flex flex-col-reverse md:flex-row items-center justify-between gap-12 max-w-7xl mx-auto w-full">
+        <div className="relative  flex flex-col-reverse md:flex-row items-center justify-between gap-12 max-w-7xl mx-auto w-full">
           {/* Left: copy */}
           <motion.div
             className="flex-1 space-y-6 text-center md:text-left will-change-transform"

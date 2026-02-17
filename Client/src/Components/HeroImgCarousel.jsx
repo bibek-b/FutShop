@@ -32,7 +32,7 @@ const HeroImgCarousel = () => {
       ))}
 
       {/* dots */}
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2  z-[999]">
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-20">
         {images.map((_, idx) => (
           <button
             key={idx}
