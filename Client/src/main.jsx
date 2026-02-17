@@ -4,7 +4,6 @@ import "./index.css";
 import App from "./App.jsx";
 import { CartContextProvider } from "./Context/CartContext.jsx";
 import { UserContextProvider } from "./Context/UserContext.jsx";
-import { ProductContextProvider } from "./Context/ProductContext.jsx";
 import { WishlistProvider } from "./Context/WishListContex.jsx";
 import { ToastContainer } from "react-toastify";
 import { LoaderContextProvider } from "./Context/LoaderContext.jsx";
@@ -16,7 +15,6 @@ createRoot(document.getElementById("root")).render(
    <LoaderContextProvider>
     <UserContextProvider>
       <WishlistProvider>
-        <ProductContextProvider>
           <CartContextProvider>
             <StrictMode>
               <App />
@@ -30,7 +28,6 @@ createRoot(document.getElementById("root")).render(
               <GlobalLoader />
             </StrictMode>
           </CartContextProvider>
-        </ProductContextProvider>
       </WishlistProvider>
     </UserContextProvider>
   </LoaderContextProvider>
