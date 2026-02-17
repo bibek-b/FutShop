@@ -9,9 +9,14 @@ import { useWishlist } from "../Context/WishListContex";
 import { toast } from "react-toastify";
 import { ProductImgPlaceholder } from "./products/ProductImgPlaceHolder";
 
+/*
+here - if we use confirmModal - every mapped child renders its own confirm modal simultaneously which caused this issue: even i clicked inside the confirmModal it gets closed: even you used useClickOutside hook
+
+soln is: move up to page level: Products.jsx
+*/
+
 const Cards = ({ id, rating, title, price, onBuyNow }) => {
   const [isAddedToCart, setIsAddedToCart] = useState(false);
-  const [quantity] = useState(1);
 
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const { handleAddToCart, handleRemoveFromCart, carts } =
