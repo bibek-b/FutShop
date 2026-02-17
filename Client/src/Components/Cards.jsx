@@ -40,7 +40,7 @@ const Cards = ({ id, rating, title, price, onBuyNow }) => {
       return;
     }
     setIsAddedToCart(true);
-    handleAddToCart({ id, userId: user._id, title, price, rating });
+    handleAddToCart({ id, userId: user._id, title, price, rating, category: productCategory });
   };
 
   const handleRemove = () => {

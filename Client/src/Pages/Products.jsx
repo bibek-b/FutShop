@@ -20,15 +20,14 @@ const cardVariant = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
 };
 
-
-
 const Products = () => {
   const { productCategory } = useParams();
-  const [products, setProducts]   = useState([]);
+  const [products, setProducts] = useState([]);
   const { showLoading, hideLoading, isLoading } = useContext(LoaderContext);
   const [buyNowItem, setBuyNowItem] = useState(null);
   const nav = useNavigate();
-  const { showConfirmModal, hideConfirmModal } = useContext(ConfirmModalContext);
+  const { showConfirmModal, hideConfirmModal } =
+    useContext(ConfirmModalContext);
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
@@ -46,21 +45,26 @@ const Products = () => {
     fetchProducts();
   }, [productCategory]);
 
-    const buyNowConfirmed = () => {
+  const buyNowConfirmed = () => {
     if (!user) {
       toast.error("Please login to buy this item");
       onClose();
       return;
     }
     nav("/cartDetails/checkout", {
-      state: { quantity: 1, directBuy: { title: buyNowItem.title, price: buyNowItem.price } },
+      state: {
+        quantity: 1,
+        directBuy: {
+          title: buyNowItem.title,
+          price: buyNowItem.price,
+        },
+      },
     });
     hideConfirmModal();
   };
-
   return (
     <div className="min-h-screen bg-[#07070d] text-white px-6 md:px-16 py-10">
-     <ConfirmModal
+      <ConfirmModal
         ConfirmIcon={FaBolt}
         confirmColor="blue"
         confirmBtnTxt="Yes, Buy Now"
@@ -71,7 +75,9 @@ const Products = () => {
 
       {/* Page header */}
       <div className="mb-8">
-        <p className="text-xs font-bold tracking-[4px] uppercase text-blue-400 mb-2">Browse</p>
+        <p className="text-xs font-bold tracking-[4px] uppercase text-blue-400 mb-2">
+          Browse
+        </p>
         <h1 className="text-4xl md:text-5xl font-black tracking-tight capitalize">
           {productCategory}
         </h1>
@@ -86,7 +92,11 @@ const Products = () => {
       {/* Skeleton grid */}
       {isLoading && (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
-          {Array(8).fill(0).map((_, i) => <SkeletonCard key={i} />)}
+          {Array(8)
+            .fill(0)
+            .map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
         </div>
       )}
 
@@ -95,7 +105,9 @@ const Products = () => {
         <div className="flex flex-col items-center justify-center gap-4 py-24 text-center">
           <span className="text-6xl">🔍</span>
           <p className="text-white/50 text-lg font-medium">No products found</p>
-          <p className="text-white/30 text-sm">Try a different category or check back later.</p>
+          <p className="text-white/30 text-sm">
+            Try a different category or check back later.
+          </p>
         </div>
       )}
 

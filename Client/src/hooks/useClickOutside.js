@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 
 export const useClickOutside = (refs, onOutsideClick) => {
-  console.log(refs.current)
   useEffect(() => {
     const handleClickOutside = (event) => {
       const refArray = Array.isArray(refs) ? refs : [refs];
