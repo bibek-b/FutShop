@@ -11,6 +11,7 @@ import {
 import ConfirmModal from "../Components/common/ConfirmModal";
 import { toast } from "react-toastify";
 import { ConfirmModalContext } from "../Context/ConfirmModalContext";
+import ShippingInfo from "../Components/common/ShippingInfo";
 
 const Cart = () => {
   const { carts, setIsBuyAllCart, setCarts, removeFromCart } =
@@ -300,10 +301,7 @@ const Cart = () => {
                 </span>
                 <span>RS. {subTotal.toLocaleString()}</span>
               </div>
-              <div className="flex justify-between text-sm text-white/50">
-                {/* <span>Delivery</span>
-                <span>RS. {DELIVERY.toLocaleString()}</span> */}
-              </div>
+              <ShippingInfo />
             </div>
 
             <div className="h-px bg-white/8" />
