@@ -17,13 +17,11 @@ const Cart = () => {
     useContext(CartContext);
   const { user } = useContext(UserContext);
 
-
   const [quantities, setQuantities] = useState([]);
   const [subTotal, setSubTotal] = useState(0);
-  const [price, setPrice] = useState(null);
   const [singleItem, setSingleItem] = useState(null);
-  const [productIdx, setProductIdx] = useState(null);
-  const { showConfirmModal, hideConfirmModal } = useContext(ConfirmModalContext);
+  const { showConfirmModal, hideConfirmModal } =
+    useContext(ConfirmModalContext);
   const [quantity, setQuantity] = useState(0);
 
   const nav = useNavigate();
@@ -44,7 +42,6 @@ const Cart = () => {
   };
 
   const increment = (idx) => {
-    setProductIdx(idx);
     setQuantities((prev) => {
       const next = [...prev];
       next[idx] += 1;
@@ -54,7 +51,6 @@ const Cart = () => {
   };
 
   const decrement = (idx) => {
-    setProductIdx(idx);
     setQuantities((prev) => {
       const next = [...prev];
       if (next[idx] > 1) next[idx] -= 1;
@@ -91,7 +87,7 @@ const Cart = () => {
         directBuy: { title: singleItem.title, price: singleItem.price },
       },
     });
-    hideConfirmModal()
+    hideConfirmModal();
   };
 
   // ── Not logged in ──
