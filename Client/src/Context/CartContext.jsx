@@ -41,7 +41,7 @@ export const CartContextProvider = ({ children }) => {
       const updatedCart = [...existingCart, product];
       
       localStorage.setItem("cartProducts", JSON.stringify(updatedCart));
-      setCarts((prev) => [...prev, product]);
+      carts.length > 0  && setCarts((prev) => [...prev, product]);
       toast.success("Product added to cart!")
     } else {
       toast.error("This product is already in cart!");
@@ -66,8 +66,10 @@ export const CartContextProvider = ({ children }) => {
 
   };
 
+  const isInCart = (id) => carts.some(item=>item.id === id);
+
   return (
-    <CartContext.Provider value={{ handleAddToCart, removeFromCart, carts, setCarts, setIsBuyAllCart, isBuyAllCart }}>
+    <CartContext.Provider value={{ handleAddToCart, removeFromCart, carts, setCarts, setIsBuyAllCart, isBuyAllCart, isInCart }}>
       {children}
     </CartContext.Provider>
   );
