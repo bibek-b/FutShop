@@ -39,17 +39,6 @@ const Navbar = () => {
         </Link>
       )}
 
-      {user && (
-        <Link
-          to="/myorders"
-          onClick={onClick}
-          className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-white/60 hover:text-white hover:bg-white/10 transition-all duration-200"
-        >
-          <FaBox size={12} />
-          Orders
-        </Link>
-      )}
-
       <Link
         to="/mywishlist"
         onClick={onClick}
