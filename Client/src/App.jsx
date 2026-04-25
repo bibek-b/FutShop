@@ -1,21 +1,25 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./Pages/Home";
 import Layout from "./Layout/Layout";
-import Cart from "./Pages/Cart";
-import Login from "./Pages/Login";
-import Register from "./Pages/Register";
-import Products from "./Pages/Products";
-import CheckOut from "./Pages/CheckOut";
-import PaymentSuccess from "./Pages/PaymentSuccess";
-import PaymentCancel from "./Pages/PaymentCancel";
-import AddProduct from "./Pages/AddProduct";
-import Wishlist from "./Pages/WishList";
 
+import { lazy, Suspense } from "react";
+import SuspenseLoader from "./Components/common/SuspenseLoader";
+
+const Register = lazy(() => import("./Pages/Register"));
+const Login = lazy(() => import("./Pages/Login"));
+const Cart = lazy(() => import("./Pages/Cart"));
+const Products = lazy(() => import("./Pages/Products"));
+const CheckOut = lazy(() => import("./Pages/CheckOut"));
+const PaymentSuccess = lazy(() => import("./Pages/PaymentSuccess"));
+const PaymentCancel = lazy(() => import("./Pages/PaymentCancel"));
+const AddProduct = lazy(() => import("./Pages/AddProduct"));
+const WishList = lazy(() => import("./Pages/WishList"));
 
 const App = () => {
   return (
     <BrowserRouter>
-      <Routes>
+     <Suspense fallback={<SuspenseLoader />}>
+       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/cartDetails" element={<Cart />} />
@@ -26,9 +30,10 @@ const App = () => {
           <Route path="/addProduct" element={<AddProduct />} />
           <Route path="/mywishlist" element={<Wishlist />} />
         </Route>
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
+     </Suspense>
     </BrowserRouter>
   );
 };
