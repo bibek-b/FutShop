@@ -1,8 +1,8 @@
-import hero from "../assets/heroImgs/hero.jpg";
+import hero from "../assets/heroImgs/hero.webp";
 import hero1 from "../assets/heroImgs/hero1.webp";
 import hero2 from "../assets/heroImgs/hero2.webp";
-import heroBall from "../assets/heroImgs/heroball.jpg";
-import heroGloves from "../assets/heroImgs/herogloves.jpg";
+import heroBall from "../assets/heroImgs/heroball.webp";
+import heroGloves from "../assets/heroImgs/herogloves.webp";
 import { useState } from "react";
 import { useEffect } from "react";
 
