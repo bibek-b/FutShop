@@ -1,8 +1,4 @@
 import { motion } from 'framer-motion';
-import boots from '../assets/boots.jpg';
-import balls from '../assets/balls.jpg';
-import gloves from '../assets/gloves.jpg';
-import jerseys from '../assets/jerseys.jpg';
 import { Link } from 'react-router-dom';
 import { LiaAngleRightSolid } from "react-icons/lia";
 import { ProductImgPlaceholder } from './products/ProductImgPlaceHolder';
@@ -18,10 +14,10 @@ const fadeUp = {
 };
 
 const categories = [
-  { img: boots,   label: 'Football Boots',   tag: 'Best Seller' },
-  { img: balls,   label: 'Football Balls',   tag: 'New Arrival' },
-  { img: jerseys, label: 'Football Jerseys', tag: 'Top Rated'   },
-  { img: gloves,  label: 'GK Gloves',        tag: 'Pro Pick'    },
+  { label: 'Football Boots',   tag: 'Best Seller' },
+  { label: 'Football Balls',   tag: 'New Arrival' },
+  {label: 'Football Jerseys', tag: 'Top Rated'   },
+  { label: 'GK Gloves',        tag: 'Pro Pick'    },
 ];
 
 const FeaturedPicks = () => {
