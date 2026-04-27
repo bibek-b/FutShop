@@ -84,7 +84,7 @@ const Products = () => {
         <h1 className="text-4xl md:text-5xl font-black tracking-tight capitalize">
           {productCategory}
         </h1>
-        {!isLoading && products.length > 0 && (
+        {!isLoading && products?.length > 0 && (
           <p className="text-sm text-white/40 mt-2">
             {products.length} product{products.length !== 1 ? "s" : ""} found
           </p>
@@ -104,7 +104,7 @@ const Products = () => {
       )}
 
       {/* Empty state */}
-      {!isLoading && products.length === 0 && (
+      {!isLoading && products?.length === 0 && (
         <div className="flex flex-col items-center justify-center gap-4 py-24 text-center">
           <span className="text-6xl">🔍</span>
           <p className="text-white/50 text-lg font-medium">No products found</p>
@@ -115,14 +115,14 @@ const Products = () => {
       )}
 
       {/* Products grid */}
-      {!isLoading && products.length > 0 && (
+      {!isLoading && products?.length > 0 && (
         <motion.div
           className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5"
           variants={container}
           initial="hidden"
           animate="visible"
         >
-          {products.map((p, idx) => (
+          {products?.map((p, idx) => (
             <motion.div key={p?._id || idx} variants={cardVariant}>
               <Suspense fallback={<SkeletonCard />}>
                 <Cards
