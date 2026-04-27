@@ -30,7 +30,7 @@ const Cards = ({ id, rating, title, price, onBuyNow }) => {
   const inWishlist = isInWishlist(id);
 
   useEffect(() => {
-    setIsAddedToCart(carts?.some((item) => item.id === id) ?? false);
+    // setIsAddedToCart(carts?.some((item) => item.id === id) ?? false);
   }, [carts, id]);
 
   const handleAdd = () => {
