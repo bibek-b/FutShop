@@ -30,7 +30,7 @@ const Cards = ({ id, rating, title, price, onBuyNow }) => {
   const inWishlist = isInWishlist(id);
 
   useEffect(() => {
-    // setIsAddedToCart(carts?.some((item) => item.id === id) ?? false);
+    setIsAddedToCart(carts?.some((item) => item.id === id) ?? false);
   }, [carts, id]);
 
   const handleAdd = () => {
@@ -39,7 +39,7 @@ const Cards = ({ id, rating, title, price, onBuyNow }) => {
       return;
     }
     setIsAddedToCart(true);
-    handleAddToCart({ id, userId: user._id, title, price, rating, category: productCategory });
+    handleAddToCart({ id, userId: user?._id, title, price, rating, category: productCategory });
   };
 
   const handleRemove = () => {

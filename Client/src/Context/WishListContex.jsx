@@ -21,7 +21,7 @@ export const WishlistProvider = ({ children }) => {
 
   const addToWishlist = (item) => {
     setWishlist((prev) => {
-      const exists = prev.some((i) => i.id === item.id);
+      const exists = prev?.some((i) => i.id === item.id);
       return exists ? prev : [...prev, item];
     });
   };
@@ -30,7 +30,7 @@ export const WishlistProvider = ({ children }) => {
     setWishlist((prev) => prev.filter((item) => item.id !== id));
   };
 
-  const isInWishlist = (id) => wishlist.some((item) => item.id === id);
+  const isInWishlist = (id) => wishlist?.some((item) => item.id === id);
 
   return (
     <WishlistContext.Provider value={{ wishlist, addToWishlist, removeFromWishlist, isInWishlist }}>

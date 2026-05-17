@@ -35,7 +35,7 @@ export const CartContextProvider = ({ children }) => {
     const userCart = existingCart.filter(item => item.userId === user._id);
 
     //check for duplicates
-    const isAlreadyInCart = userCart.some((item) => item.id === product.id);
+    const isAlreadyInCart = userCart?.some((item) => item.id === product.id);
     
     if (!isAlreadyInCart ) {
       const updatedCart = [...existingCart, product];
@@ -51,7 +51,7 @@ export const CartContextProvider = ({ children }) => {
   const removeFromCart = (productId) => {
     const existingCart = JSON.parse(localStorage.getItem("cartProducts")) || [];
 
-    const isInCart = existingCart.some(p => p.id === productId);
+    const isInCart = existingCart?.some(p => p.id === productId);
 
     if(isInCart) {
       const updatedCart = existingCart.filter(e => e.id !== productId);
@@ -66,7 +66,7 @@ export const CartContextProvider = ({ children }) => {
 
   };
 
-  const isInCart = (id) => carts.some(item=>item.id === id);
+  const isInCart = (id) => carts?.some(item=>item.id === id);
 
   return (
     <CartContext.Provider value={{ handleAddToCart, removeFromCart, carts, setCarts, setIsBuyAllCart, isBuyAllCart, isInCart }}>
